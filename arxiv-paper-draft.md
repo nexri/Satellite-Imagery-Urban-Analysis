@@ -144,6 +144,37 @@ $$
 6. **Distance-based density gradient calculation**:
    We calculate how urban density changes with distance from identified urban centers using a Euclidean distance transform. For each distance increment, we calculate the mean density of all urban pixels at that distance, creating a density-distance profile that characterizes the urban structure.
 
+To quantify this relationship systematically, we implement the following approach:
+
+1. **Distance Transform**: Using the identified urban center points as reference locations, we apply a Euclidean distance transform to create a distance map where each pixel value represents its distance from the nearest urban center:
+
+   $$D(x,y) = \min_{(c_x,c_y) \in C} \sqrt{(x-c_x)^2 + (y-c_y)^2}$$
+
+   Where:
+   - $D(x,y)$ is the distance value at pixel location $(x,y)$
+   - $C$ is the set of all urban center points (locations where urban density exceeds the center threshold)
+
+2. **Urban Area Filtering**: We extract distances and densities only for pixels within urban areas:
+
+   $$D_{urban} = \{D(x,y) \mid (x,y) \in U\}$$
+   $$\rho_{urban} = \{\rho(x,y) \mid (x,y) \in U\}$$
+
+   Where:
+   - $U$ is the set of all urban pixels (as identified in our segmentation)
+   - This ensures our gradient analysis focuses only on built-up areas
+
+3. **Distance Binning and Mean Density Calculation**: For each integer distance value, we calculate the mean density of urban pixels at that distance:
+
+   $$\rho(d) = \frac{1}{|P_d|} \sum_{p \in P_d} \rho(p)$$
+
+   Where:
+   - $P_d = \{p \in U \mid d \leq D(p) < d+1\}$ is the set of urban pixels with distance in bin $d$
+   - Each bin has a width of 1 pixel, which corresponds to the satellite resolution (typically 20m)
+
+The result is a series of points $(d, \rho(d))$ that represent how urban density changes with distance from urban centers. This density-distance profile forms the foundation for our gradient analysis and urban morphology classification.
+
+For subsequent analysis, we convert the pixel distances to real-world units (kilometers) by multiplying by the satellite resolution. The resulting density gradient profile directly informs public transport planning by revealing the spatial distribution of urban density.
+
 ### 3.3 Density Gradient Metrics
 
 We calculate two key metrics for each analyzed city:
