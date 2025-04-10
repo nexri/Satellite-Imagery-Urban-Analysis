@@ -167,7 +167,9 @@ $$
 
    We calculate LD using the formula:
 
-   $$LD = \frac{\rho_{target} - \beta}{\alpha}$$
+$$
+LD = \frac{\rho_{target} - \beta}{\alpha}
+$$
 
    Where:
    - $\rho_{target}$ is the target density threshold (typically set to the minimum density found in urban areas)
