@@ -114,6 +114,17 @@ $$
 
    To ensure meaningful urban analysis, we filter out small disconnected patches:
 
+   $$U_{final}(x,y) =
+   \begin{cases}
+   1 & \text{if } (x,y) \in C_i \text{ and } \text{Area}(C_i) \geq 100 \text{ pixels} \\
+   0 & \text{otherwise}
+   \end{cases}$$
+
+   Where $C_i$ represents the $i$-th connected component in the urban mask.
+
+5. **Urban center identification**:
+   Urban centers are identified as regions with particularly high density values, defined by:
+
 $$
 C(x,y) =
 \begin{cases}
@@ -121,17 +132,6 @@ C(x,y) =
   0, & \text{otherwise}
 \end{cases}
 $$
-
-   Where $C_i$ represents the $i$-th connected component in the urban mask.
-
-5. **Urban center identification**:
-   Urban centers are identified as regions with particularly high density values, defined by:
-
-   $$C(x,y) =
-   \begin{cases}
-   1 & \text{if } \rho(x,y) > \tau_{center} \text{ and } U_{final}(x,y) = 1 \\
-   0 & \text{otherwise}
-   \end{cases}$$
 
    Where:
    - $C(x,y)$ indicates whether pixel $(x,y)$ is part of an urban center
