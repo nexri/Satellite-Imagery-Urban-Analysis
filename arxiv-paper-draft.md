@@ -72,7 +72,7 @@ Preprocessing includes:
 
 Our methodology follows a systematic workflow as illustrated in Figure 1. The process consists of several key sequential steps:
 
-![Urban Density Gradient Analysis Methodology Pipeline](methodology-diagram.svg)
+![Urban Density Gradient Analysis Methodology Pipeline](methodology-diagram)
 
 **Figure 1: Urban Density Gradient Analysis Methodology Pipeline**
 
@@ -88,7 +88,8 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 4. **Urban area segmentation**:
    Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories using the following threshold-based classification:
 
-   $S(x,y) = \begin{cases}
+   $S(x,y) = 
+   \begin{cases} 
    1 \text{ (Water)} & \text{if } \rho(x,y) < \tau_{water} \\
    2 \text{ (Terrain)} & \text{if } \tau_{water} \leq \rho(x,y) < \tau_{urban} \\
    3 \text{ (Urban)} & \text{if } \rho(x,y) \geq \tau_{urban}
@@ -111,7 +112,8 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 
    To ensure meaningful urban analysis, we filter out small disconnected patches:
    
-   $U_{final}(x,y) = \begin{cases}
+   $U_{final}(x,y) = 
+   \begin{cases}
    1 & \text{if } (x,y) \in C_i \text{ and } \text{Area}(C_i) \geq 100 \text{ pixels} \\
    0 & \text{otherwise}
    \end{cases}$
@@ -121,7 +123,8 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 5. **Urban center identification**:
    Urban centers are identified as regions with particularly high density values, defined by:
    
-   $C(x,y) = \begin{cases}
+   $C(x,y) = 
+   \begin{cases}
    1 & \text{if } \rho(x,y) > \tau_{center} \text{ and } U_{final}(x,y) = 1 \\
    0 & \text{otherwise}
    \end{cases}$
@@ -177,7 +180,7 @@ We classify cities based on their density gradient plots:
 
 The peak detection algorithm identifies local maxima in the density gradient plot with a prominence threshold scaled to the data range. Mathematically, we identify peaks where:
 
-$\rho_i > \rho_{i-1}$ and $\rho_i > \rho_{i+1}$ and $\rho_i - \min(\rho_L, \rho_R) > p \cdot (\rho_{max} - \rho_{min})$
+$\rho_i > \rho_{i-1} \text{ and } \rho_i > \rho_{i+1} \text{ and } \rho_i - \min(\rho_L, \rho_R) > p \cdot (\rho_{max} - \rho_{min})$
 
 Where:
 - $\rho_i$ is the density at point $i$
