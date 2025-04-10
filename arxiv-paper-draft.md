@@ -72,7 +72,7 @@ Preprocessing includes:
 
 Our methodology follows a systematic workflow as illustrated in Figure 1. The process consists of several key sequential steps:
 
-![Urban Density Gradient Analysis Methodology Pipeline](methodology-diagram)
+![Urban Density Gradient Analysis Methodology Pipeline](methodology-diagram.svg)
 
 **Figure 1: Urban Density Gradient Analysis Methodology Pipeline**
 
