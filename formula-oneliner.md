@@ -1,0 +1,1 @@
+$$S(x,y) = \begin{cases} 1 \text{ (Water)} & \text{if } \rho(x,y) < \tau_{water}, \\ 2 \text{ (Terrain)} & \text{if } \tau_{water} \leq \rho(x,y) < \tau_{urban}, \\ 3 \text{ (Urban)} & \text{if } \rho(x,y) \geq \tau_{urban} \end{cases}$$
