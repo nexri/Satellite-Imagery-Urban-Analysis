@@ -181,43 +181,19 @@ For cities with complex morphologies, the MSE serves as an indicator of whether 
 - Statistical comparison of α and LD values across cities
 - Correlation with existing public transport coverage and usage metrics
 
-## 5. Public Transport Implications
+## 5. Discussion
 
-This section would explore how the identified urban structures relate to public transport planning:
-
-### 5.1 Monocentric Implications
-- Radial transport network efficiency
-- Coverage optimization strategies
-- Density thresholds for different transport modes
-
-### 5.2 Polycentric Implications
-- Network design for multiple centers
-- Hub-and-spoke versus grid network efficiency
-- Inter-center connection optimization
-
-### 5.3 Predictive Modeling
-- Using α and LD values to predict optimal transport network configurations
-- Cost-efficiency modeling based on urban structure metrics
-- Service frequency optimization related to density gradients
-
-## 6. Discussion
-
-### 6.1 Metric Interpretation
+### 5.1 Metric Interpretation
 - How to interpret α values for transport planning
 - Significance of LD distances for service coverage
 - Relationship to traditional transport planning metrics
 
-### 6.2 Limitations and Considerations
+### 5.2 Limitations and Considerations
 - Resolution constraints of satellite data
 - Temporal variations in urban density
 - Need for ground-truthing and validation
 
-### 6.3 Planning Applications
-- Screening tool for initial public transport assessment
-- Identifying underserved areas based on density thresholds
-- Comparing cities globally for transport benchmarking
-
-## 7. Conclusions and Future Work
+## 6. Conclusions and Future Work
 
 Our research demonstrates that multi-modal satellite imagery analysis can provide valuable insights for public transport planning through quantification of urban density gradients. The α coefficient and LD distance metrics offer an effective screening tool to understand urban structure and its implications for transport efficiency.
 
