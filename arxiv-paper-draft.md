@@ -22,9 +22,9 @@ The urban density gradient, which describes how building and population density 
 
 Urban density gradient analysis originated with the classic monocentric city model pioneered by Alonso [14], Muth [15], and Mills [16]. This foundational work established the negative exponential density function describing how population density typically decreases with distance from the city center. Clark's [17] empirical work validated this model across numerous cities, confirming that population density follows the pattern:
 
-$D(r) = D_0 e^{-αr}$
+$$D(r) = D_0 e^{-\alpha r}$$
 
-where $D(r)$ is the density at distance $r$ from the center, $D_0$ is the central density, and $α$ is the density gradient coefficient.
+where $D(r)$ is the density at distance $r$ from the center, $D_0$ is the central density, and $\alpha$ is the density gradient coefficient.
 
 Bertaud and Malpezzi [18] expanded this analysis to a global dataset of 48 cities, demonstrating how density gradients vary across different urban contexts and development stages, highlighting the relationship between density patterns and transportation efficiency. Cervero and Kockelman [19] further developed the connection between urban form and transport planning through their "3Ds" framework—density, diversity, and design—to explain how built environment characteristics influence travel behavior. Ewing and Cervero [20] later expanded this to the "5Ds" by adding destination accessibility and distance to transit, firmly establishing the theoretical link between urban density patterns and transport efficiency.
 
@@ -76,7 +76,7 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 
 **Figure 1: Urban Density Gradient Analysis Methodology Pipeline**
 
-1. **Edge detection and density mapping from optical imagery**: 
+1. **Edge detection and density mapping from optical imagery**:
    We apply Sobel operators to identify structural boundaries in optical images. These edge maps provide critical information about the spatial organization of urban features. Edge density is then calculated using Gaussian blurring to create a continuous density field that highlights areas with concentrated structural elements.
 
 2. **SAR imagery processing for building structure identification**:
@@ -86,13 +86,103 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
    We combine the edge density information from optical imagery with the structural information from SAR data to create a comprehensive urban density map. To remove noise while preserving important structural edges, we apply Non-Local Means denoising, which is particularly effective at maintaining sharp transitions in urban boundaries.
 
 4. **Urban area segmentation**:
-   Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories: water, terrain, and urban areas. Morphological operations are then applied to refine the urban mask and remove noise. To ensure meaningful urban analysis, we filter out small disconnected patches that may represent isolated buildings or processing artifacts.
+   Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories using the following threshold-based classification:
+
+$$
+S(x,y) =
+\begin{cases}
+  1 \text{ (Water)}, & \text{if } \rho(x,y) < \tau_{water} \\
+  2 \text{ (Terrain)}, & \text{if } \tau_{water} \leq \rho(x,y) < \tau_{urban} \\
+  3 \text{ (Urban)}, & \text{if } \rho(x,y) \geq \tau_{urban}
+\end{cases}
+$$
+
+   Where:
+   - $S(x,y)$ is the segmentation class at pixel location $(x,y)$
+   - $\rho(x,y)$ is the combined density value at pixel location $(x,y)$
+   - $\tau_{water} = 0.4$ is the water threshold
+   - $\tau_{urban} = 1.25$ is the urban threshold
+
+   Morphological operations are then applied to refine the urban mask and remove noise:
+
+   $$U_{refined} = \text{Close}(\text{Dilate}(U_{initial}, k), k)$$
+
+   Where:
+   - $U_{initial}$ is the initial urban mask where $S(x,y) = 3$
+   - $k$ is a $5 \times 5$ structuring element
+   - Dilate and Close are standard morphological operations
+
+   To ensure meaningful urban analysis, we filter out small disconnected patches:
+
+   $$U_{final}(x,y) =
+   \begin{cases}
+   1 & \text{if } (x,y) \in C_i \text{ and } \text{Area}(C_i) \geq 100 \text{ pixels} \\
+   0 & \text{otherwise}
+   \end{cases}$$
+
+   Where $C_i$ represents the $i$-th connected component in the urban mask.
 
 5. **Urban center identification**:
-   Urban centers are identified as regions with particularly high density values, defined by the `urban_center_threshold` parameter. This approach aligns with established methodologies for identifying urban centers from remote sensing data [38, 40].
+   Urban centers are identified as regions with particularly high density values, defined by:
+
+$$
+C(x,y) =
+\begin{cases}
+  1, & \text{if } \rho(x,y) > \tau_{center} \text{ and } U_{final}(x,y) = 1 \\
+  0, & \text{otherwise}
+\end{cases}
+$$
+
+   Where:
+   - $C(x,y)$ indicates whether pixel $(x,y)$ is part of an urban center
+   - $\rho(x,y)$ is the combined density value
+   - $\tau_{center} = 1.4$ is the urban center threshold
+   - $U_{final}(x,y)$ is the final urban mask
+
+   This approach aligns with established methodologies for identifying urban centers from remote sensing data [38, 40].
 
 6. **Distance-based density gradient calculation**:
    We calculate how urban density changes with distance from identified urban centers using a Euclidean distance transform. For each distance increment, we calculate the mean density of all urban pixels at that distance, creating a density-distance profile that characterizes the urban structure.
+
+   To quantify this relationship systematically, we implement the following approach:
+
+   **a. Distance Transform**: Using the identified urban center points as reference locations, we apply a Euclidean distance transform to create a distance map where each pixel value represents its distance from the nearest urban center:
+
+$$
+D(x,y) = \min_{(c_x,c_y) \in C} \sqrt{(x-c_x)^2 + (y-c_y)^2}
+$$
+
+   Where:
+   - $D(x,y)$ is the distance value at pixel location $(x,y)$
+   - $C$ is the set of all urban center points (locations where urban density exceeds the center threshold)
+
+   **b. Urban Area Filtering**: We extract distances and densities only for pixels within urban areas:
+
+$$
+D_{urban} = \{D(x,y) \mid (x,y) \in U\}
+$$
+
+$$
+\rho_{urban} = \{\rho(x,y) \mid (x,y) \in U\}
+$$
+
+   Where:
+   - $U$ is the set of all urban pixels (as identified in our segmentation)
+   - This ensures our gradient analysis focuses only on built-up areas
+
+   **c. Distance Binning and Mean Density Calculation**: For each integer distance value, we calculate the mean density of urban pixels at that distance:
+
+$$
+\rho(d) = \frac{1}{|P_d|} \sum_{p \in P_d} \rho(p)
+$$
+
+   Where:
+   - $P_d = \{p \in U \mid d \leq D(p) < d+1\}$ is the set of urban pixels with distance in bin $d$
+   - Each bin has a width of 1 pixel, which corresponds to the satellite resolution (typically 20m)
+
+The result is a series of points $(d, \rho(d))$ that represent how urban density changes with distance from urban centers. This density-distance profile forms the foundation for our gradient analysis and urban morphology classification.
+
+For subsequent analysis, we convert the pixel distances to real-world units (kilometers) by multiplying by the satellite resolution. The resulting density gradient profile directly informs public transport planning by revealing the spatial distribution of urban density.
 
 ### 3.3 Density Gradient Metrics
 
@@ -102,7 +192,9 @@ We calculate two key metrics for each analyzed city:
 
    We calculate α through linear regression on selected density minima points using:
 
-   $\alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}$
+$$
+\alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}
+$$
 
    Where:
    - $d_i$ is the distance from urban center (in km) at point $i$
@@ -115,7 +207,9 @@ We calculate two key metrics for each analyzed city:
 
    We calculate LD using the formula:
 
-   $LD = \frac{\rho_{target} - \beta}{\alpha}$
+$$
+LD = \frac{\rho_{target} - \beta}{\alpha}
+$$
 
    Where:
    - $\rho_{target}$ is the target density threshold (typically set to the minimum density found in urban areas)
@@ -134,7 +228,7 @@ We classify cities based on their density gradient plots:
 
 The peak detection algorithm identifies local maxima in the density gradient plot with a prominence threshold scaled to the data range. Mathematically, we identify peaks where:
 
-$\rho_i > \rho_{i-1}$ and $\rho_i > \rho_{i+1}$ and $\rho_i - \min(\rho_L, \rho_R) > p \cdot (\rho_{max} - \rho_{min})$
+$$\rho_i > \rho_{i-1} \text{ and } \rho_i > \rho_{i+1} \text{ and } \rho_i - \min(\rho_L, \rho_R) > p \cdot (\rho_{max} - \rho_{min})$$
 
 Where:
 - $\rho_i$ is the density at point $i$
@@ -150,7 +244,7 @@ Our approach not only identifies multiple centers in polycentric cities but also
 
 To validate our gradient analysis, we calculate the Mean Squared Error (MSE) between the actual density values and the fitted regression line:
 
-$MSE = \frac{1}{n}\sum_{i=1}^{n}(\rho_i - (\alpha \cdot d_i + \beta))^2$
+$$MSE = \frac{1}{n}\sum_{i=1}^{n}(\rho_i - (\alpha \cdot d_i + \beta))^2$$
 
 Where:
 - $\rho_i$ is the actual density at distance $d_i$
@@ -161,6 +255,20 @@ Where:
 This metric provides a quantitative assessment of how well our linear gradient model fits the observed urban density pattern, with lower values indicating better fit.
 
 For cities with complex morphologies, the MSE serves as an indicator of whether a simple linear gradient model is appropriate or if more sophisticated approaches, such as piecewise regression or non-linear models, might better capture the urban structure.
+
+### 3.6 Implementation Simplicity
+
+While the mathematical formulations presented in this methodology may appear complex, the actual Python implementation is remarkably straightforward thanks to several powerful libraries that handle much of the computational complexity. The implementation leverages:
+
+- **OpenCV (cv2)**: Provides essential image processing functions including edge detection (`cv2.Sobel`, `cv2.magnitude`), morphological operations (`cv2.dilate`, `cv2.morphologyEx`, `cv2.MORPH_CLOSE`), connected component analysis (`cv2.connectedComponentsWithStats`), and non-local means denoising (`cv2.fastNlMeansDenoising`).
+- **NumPy**: Supports efficient array manipulations (`np.array`, `np.zeros_like`, `np.clip`), mathematical operations (`np.max`, `np.min`), and masked array functionality (`np.ma.masked_array`) crucial for density calculations.
+- **SciPy**: Offers specialized functions such as distance transforms (`scipy.ndimage.distance_transform_edt`), peak finding algorithms (`scipy.signal.find_peaks`), and statistical analysis tools for regression (`scipy.stats.linregress`).
+- **Matplotlib**: Enables the visualization of urban segmentation results and density gradient plots through functions like `plt.figure`, `plt.plot`, `plt.axhline`, and `plt.savefig`.
+- **scikit-learn**: Provides metrics like mean squared error (`sklearn.metrics.mean_squared_error`) for validation of our gradient model.
+
+With these libraries, the entire urban density gradient analysis—from image preprocessing to gradient calculation—requires only about 100 lines of effective code. This efficient implementation makes the methodology particularly valuable for resource-constrained settings, where complex urban analysis might otherwise be prohibitive.
+
+The computational efficiency means that analysts can process entire cities in minutes rather than hours, enabling rapid comparative studies across multiple urban areas. The complete implementation, with additional examples and documentation, is available in an open-source repository under the MIT license at https://github.com/nexri/Satellite-Imagery-Urban-Analysis, making this methodology accessible to urban planners, researchers, and policy makers worldwide.
 
 ## 4. Case Studies
 
@@ -181,43 +289,19 @@ For cities with complex morphologies, the MSE serves as an indicator of whether 
 - Statistical comparison of α and LD values across cities
 - Correlation with existing public transport coverage and usage metrics
 
-## 5. Public Transport Implications
+## 5. Discussion
 
-This section would explore how the identified urban structures relate to public transport planning:
-
-### 5.1 Monocentric Implications
-- Radial transport network efficiency
-- Coverage optimization strategies
-- Density thresholds for different transport modes
-
-### 5.2 Polycentric Implications
-- Network design for multiple centers
-- Hub-and-spoke versus grid network efficiency
-- Inter-center connection optimization
-
-### 5.3 Predictive Modeling
-- Using α and LD values to predict optimal transport network configurations
-- Cost-efficiency modeling based on urban structure metrics
-- Service frequency optimization related to density gradients
-
-## 6. Discussion
-
-### 6.1 Metric Interpretation
+### 5.1 Metric Interpretation
 - How to interpret α values for transport planning
 - Significance of LD distances for service coverage
 - Relationship to traditional transport planning metrics
 
-### 6.2 Limitations and Considerations
+### 5.2 Limitations and Considerations
 - Resolution constraints of satellite data
 - Temporal variations in urban density
 - Need for ground-truthing and validation
 
-### 6.3 Planning Applications
-- Screening tool for initial public transport assessment
-- Identifying underserved areas based on density thresholds
-- Comparing cities globally for transport benchmarking
-
-## 7. Conclusions and Future Work
+## 6. Conclusions and Future Work
 
 Our research demonstrates that multi-modal satellite imagery analysis can provide valuable insights for public transport planning through quantification of urban density gradients. The α coefficient and LD distance metrics offer an effective screening tool to understand urban structure and its implications for transport efficiency.
 
