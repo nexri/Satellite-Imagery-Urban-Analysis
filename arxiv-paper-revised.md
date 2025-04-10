@@ -6,69 +6,49 @@ This paper presents a novel computational approach for evaluating public transpo
 
 ## 1. Introduction
 
-In recent years, advancements in remote sensing technology have significantly increased our access to diverse and rich satellite data types, including optical imagery and Synthetic Aperture Radar (SAR) data. Platforms such as the Copernicus Data Space, Sentinel Hub, and various commercial satellite imagery providers have made these datasets widely accessible to researchers, urban planners, and commercial users [1-3]. The proliferation of open-access satellite data has spurred numerous analytical methodologies and applications in urban studies, agriculture, environmental monitoring, and disaster management [4,5].
+Recent advancements in remote sensing technology have greatly expanded access to diverse satellite data types, including optical imagery and Synthetic Aperture Radar (SAR). Platforms such as the Copernicus Data Space, Sentinel Hub, and commercial providers have democratized these datasets for researchers, urban planners, and commercial users [1-3]. This proliferation of open-access satellite data has catalyzed numerous analytical methodologies in urban studies, agriculture, environmental monitoring, and disaster management [4,5].
 
-However, harnessing this vast and continually expanding repository of satellite data presents significant challenges. Effective analysis and meaningful interpretation demand robust computational resources and advanced mathematical modeling capabilities. Traditional analysis methods, reliant on manual processing and simplistic modeling, are often inadequate to fully exploit the potential of satellite data, especially given its multimodal nature and the vast areas it covers [6,7].
+However, effectively analyzing this vast repository of multi-modal satellite data presents significant challenges, requiring robust computational resources and advanced mathematical modeling capabilities. Traditional methods that rely on manual processing and simplistic modeling often fall short in fully exploiting satellite data's potential [6,7]. In response, an ecosystem of startups and research initiatives has emerged to bridge the gap between complex satellite data and actionable insights, with particular focus on SAR data processing, analytics automation, and user-friendly dissemination [8]. Despite these advancements, there remains a critical need for simple, robust, and computationally efficient methodologies suitable for resource-limited environments where traditional, expensive urban planning methods may not be feasible [9].
 
-In response to these analytical challenges and the opportunities afforded by widespread satellite data availability, a dynamic ecosystem of startups and research initiatives has emerged, as outlined extensively by geo-spatial industry platforms such as Geoawesomeness. These initiatives are specifically aimed at bridging the gap between complex satellite data and actionable insights, with a particular emphasis on SAR satellite data processing, analytics automation, and user-friendly dissemination of complex analyses [8]. Companies such as ICEYE, Capella Space, and Umbra are leading in innovative solutions ranging from disaster monitoring and urban analysis to maritime surveillance and agriculture optimization [8].
+A pressing global challenge is optimizing transportation infrastructure, which underpins economic growth, urban sustainability, and social equity. In many urban areas, transportation networks—including communications pathways, logistics, and especially public transit systems—lag behind optimal efficiency, contributing to congestion, pollution, and reduced quality of life [10,11]. Addressing this challenge requires innovative approaches capable of rapidly and reliably assessing transportation infrastructure efficiency through spatial urban characteristics.
 
-Despite these advancements, there remains a critical demand for simple, robust, and computationally efficient methodologies tailored for environments with limited computational resources or financial constraints. Such simplified yet powerful analytical approaches are crucial for ensuring that satellite-derived insights can be effectively utilized globally, particularly in resource-limited settings where traditional, expensive urban planning methods might not be feasible [9].
+This paper proposes a novel computational framework designed to analyze urban density gradients using multi-modal satellite imagery for public transport planning. Our methodology integrates optical and SAR data to efficiently segment urban areas, identify urban centers, and quantify spatial density distributions. We introduce two key metrics—the density gradient coefficient (α) and the minimum effective distance (LD)—offering urban planners a straightforward yet powerful means of preliminary assessment that directly connects urban morphology to public transport optimization strategies. This approach provides significant advantages in accessibility, resource utilization, and scalability, enabling robust transportation infrastructure assessment for diverse urban configurations, including monocentric and polycentric city structures [12,13].
 
-One particularly pressing global challenge is the optimization of transportation infrastructure. Effective transport systems underpin economic growth, urban sustainability, and social equity. Nevertheless, in many urban areas, transportation networks, including communications pathways, logistics, and especially public transit systems, significantly lag behind optimal efficiency, contributing to congestion, pollution, and reduced quality of life [10,11]. Addressing this challenge requires innovative approaches capable of quickly and reliably assessing transportation infrastructure efficiency through spatial urban characteristics.
-
-In this paper, we propose a novel computational framework specifically designed to analyze urban density gradients using multi-modal satellite imagery for public transport planning purposes. Our methodology integrates optical and SAR data to efficiently segment urban areas, identify urban centers, and quantify spatial density distributions. By introducing two key metrics—the density gradient coefficient (α) and the minimum effective distance (LD)—we offer urban planners a straightforward yet powerful means of preliminary assessment, directly connecting urban morphology to public transport optimization strategies. This approach provides significant advantages in terms of accessibility, resource utilization, and scalability, enabling robust transportation infrastructure assessment for diverse urban configurations, including monocentric and polycentric city structures [12,13].
-
-The urban density gradient, which describes how building and population density change with distance from urban centers, has significant implications for public transport planning. Steep gradients (high α values) typically indicate compact urban forms that can efficiently support mass transit, while shallow gradients suggest sprawling development patterns that may require different transport solutions.
-
-Through our analysis, we demonstrate that cities can be categorized based on their gradient density plots, with clear distinctions between monocentric cities (showing a single dominant peak) and polycentric cities (exhibiting multiple density peaks). These morphological differences have direct implications for optimal public transport network design.
+The urban density gradient, which describes how building and population density change with distance from urban centers, has significant implications for public transport planning. Steep gradients (high α values) typically indicate compact urban forms that efficiently support mass transit, while shallow gradients suggest sprawling development patterns requiring different transport solutions. Through our analysis, we demonstrate that cities can be categorized based on their gradient density plots—with clear distinctions between monocentric cities (showing a single dominant peak) and polycentric cities (exhibiting multiple density peaks). These morphological differences have direct implications for optimal public transport network design.
 
 ## 2. Related Work
 
-### 2.1 Urban Density Gradient Models and Their Relationship to Transport Planning
+### 2.1 Urban Density Gradient Models and Transport Planning
 
-Urban density gradient analysis has roots in the classic monocentric city model pioneered by Alonso [14], Muth [15], and Mills [16]. This foundational work established the negative exponential density function that describes how population density typically decreases with distance from the city center. Clark's [17] empirical work validated this model across numerous cities, confirming that population density follows a pattern that can be expressed as:
+Urban density gradient analysis originated with the classic monocentric city model pioneered by Alonso [14], Muth [15], and Mills [16]. This foundational work established the negative exponential density function describing how population density typically decreases with distance from the city center. Clark's [17] empirical work validated this model across numerous cities, confirming that population density follows the pattern:
 
 $D(r) = D_0 e^{-αr}$
 
 where $D(r)$ is the density at distance $r$ from the center, $D_0$ is the central density, and $α$ is the density gradient coefficient.
 
-More recently, Bertaud and Malpezzi [18] expanded this analysis to a global dataset of 48 cities, demonstrating how density gradients vary across different urban contexts and development stages. Their work highlighted the relationship between density patterns and transportation efficiency, with steeper gradients generally supporting more efficient public transport networks.
+Bertaud and Malpezzi [18] expanded this analysis to a global dataset of 48 cities, demonstrating how density gradients vary across different urban contexts and development stages, highlighting the relationship between density patterns and transportation efficiency. Cervero and Kockelman [19] further developed the connection between urban form and transport planning through their "3Ds" framework—density, diversity, and design—to explain how built environment characteristics influence travel behavior. Ewing and Cervero [20] later expanded this to the "5Ds" by adding destination accessibility and distance to transit, firmly establishing the theoretical link between urban density patterns and transport efficiency.
 
-The connection between urban form and transport planning has been further developed by Cervero and Kockelman [19], who introduced the "3Ds" framework—density, diversity, and design—to explain how built environment characteristics influence travel behavior. Ewing and Cervero [20] later expanded this to the "5Ds" by adding destination accessibility and distance to transit, firmly establishing the theoretical link between urban density patterns and transport efficiency.
+### 2.2 Monocentric versus Polycentric Urban Development
 
-### 2.2 Monocentric versus Polycentric Urban Development Theories
+While the monocentric model provides a useful baseline, contemporary urban forms often exhibit polycentric structures. Garreau [21] documented the emergence of "edge cities," while Gordon and Richardson [22] tracked the systematic decentralization of employment and commercial activities in metropolitan areas. Theoretical frameworks for understanding polycentric development have been advanced by Anas et al. [23], who proposed models accounting for multiple centers and subcenters. McMillen and Smith [24] demonstrated that the number of subcenters in an urban area relates systematically to population size and commuting costs.
 
-While the monocentric model provides a useful baseline, contemporary urban forms often exhibit polycentric structures. Garreau [21] documented the emergence of "edge cities" in the United States, while Gordon and Richardson [22] tracked the systematic decentralization of employment and commercial activities in metropolitan areas.
+Importantly for our work, Bertaud [25] argued that even polycentric cities typically maintain a dominant center, suggesting that gradient analysis remains valuable in complex urban systems. His concept of "urban spatial structure" describes both population distribution and trip patterns within metropolitan areas, providing a bridge between urban form and transport needs.
 
-Theoretical frameworks for understanding polycentric development have been advanced by Anas et al. [23], who proposed models of urban spatial structure that account for multiple centers and subcenters. McMillen and Smith [24] further demonstrated that the number of subcenters in an urban area is systematically related to population size and commuting costs, providing a theoretical basis for predicting urban structural evolution.
+### 2.3 Public Transport Efficiency Metrics and Spatial Determinants
 
-Critically for our work, Bertaud [25] argued that even polycentric cities maintain a dominant center in most cases, suggesting that gradient analysis remains valuable even in complex urban systems. He introduced the concept of the "urban spatial structure," which describes both the spatial distribution of population and the pattern of trips within metropolitan areas.
-
-### 2.3 Public Transport Efficiency Metrics and Their Spatial Determinants
-
-The efficiency of public transport systems has been evaluated through various metrics. Vuchic [26] established fundamental relationships between transport network design and urban form, while Mees [27] emphasized the importance of network planning over technological solutions in achieving efficient public transport.
-
-Newman and Kenworthy [28] demonstrated strong correlations between urban density and transport energy use across global cities, establishing density thresholds for viable public transport. Their research identified approximately 35 people per hectare as a minimum density for effective public transit service.
+Public transport system efficiency has been evaluated through various metrics. Vuchic [26] established fundamental relationships between transport network design and urban form, while Mees [27] emphasized the importance of network planning over technological solutions. Newman and Kenworthy [28] demonstrated strong correlations between urban density and transport energy use across global cities, establishing approximately 35 people per hectare as a minimum density threshold for viable public transport service.
 
 Building on this work, Cervero and Guerra [29] quantified the relationship between density and transit ridership, finding that light rail systems become cost-effective at densities of 30 people per hectare, while heavy rail requires approximately 45 people per hectare. These thresholds align closely with our proposed minimum effective distance (LD) metric.
 
-### 2.4 Remote Sensing Approaches to Urban Transport Analysis
+### 2.4 Remote Sensing for Urban Transport Analysis
 
-Remote sensing has increasingly been applied to urban transport analysis. Thakuriah et al. [30] reviewed applications of geospatial data in transportation planning, highlighting the growing importance of satellite imagery in understanding urban mobility patterns.
-
-Taubenböck et al. [31] used remote sensing to identify urban growth patterns and their implications for sustainable transport planning. They developed techniques for classifying urban morphology from satellite data that inform transport network design decisions.
-
-More specifically, Li et al. [32] demonstrated methods for extracting road networks from high-resolution satellite imagery, while Barrington-Leigh and Millard-Ball [33] used similar techniques to track global street-network connectivity and its relationship to transportation efficiency.
+Remote sensing applications in urban transport analysis have grown significantly. Thakuriah et al. [30] reviewed applications of geospatial data in transportation planning, while Taubenböck et al. [31] used remote sensing to identify urban growth patterns and their implications for sustainable transport planning. Li et al. [32] demonstrated methods for extracting road networks from high-resolution satellite imagery, and Barrington-Leigh and Millard-Ball [33] tracked global street-network connectivity and its relationship to transportation efficiency.
 
 ### 2.5 Multi-modal Satellite Data Fusion for Urban Studies
 
-The integration of multiple satellite data types has proven particularly valuable for comprehensive urban analysis. Zhu et al. [34] reviewed methods for fusing optical and SAR data, highlighting complementary strengths that improve urban feature extraction.
+The integration of multiple satellite data types has proven particularly valuable for comprehensive urban analysis. Zhu et al. [34] reviewed methods for fusing optical and SAR data, highlighting complementary strengths that improve urban feature extraction. Esch et al. [35] developed the Global Urban Footprint using SAR data, demonstrating its effectiveness for identifying built-up areas globally, while Pesaresi et al. [36] created similar products using optical imagery through the Global Human Settlement Layer project.
 
-Esch et al. [35] developed the Global Urban Footprint using SAR data, demonstrating its effectiveness for identifying built-up areas globally. Pesaresi et al. [36] created similar products using optical imagery through the Global Human Settlement Layer project.
-
-Combining these approaches, Gamba and Dell'Acqua [37] showed that multi-sensor fusion techniques significantly improve the accuracy of urban area delineation and structural characterization. This improvement is particularly relevant for transport analysis, as Seto and Fragkias [38] demonstrated by using multi-temporal satellite data to track urban growth patterns and their transportation implications.
-
-Recent work by Li et al. [39] has specifically addressed the challenge of identifying urban centers from satellite imagery, developing automated methods that align with our approach to gradient analysis. Similarly, Taubenböck et al. [40] have proposed methods for classifying urban spatial patterns from remote sensing data that directly inform public transport planning.
+Gamba and Dell'Acqua [37] showed that multi-sensor fusion techniques significantly improve the accuracy of urban area delineation and structural characterization. Li et al. [38] addressed the challenge of identifying urban centers from satellite imagery, developing automated methods that align with our approach to gradient analysis. Similarly, Taubenböck et al. [39] proposed methods for classifying urban spatial patterns from remote sensing data that directly inform public transport planning.
 
 Our work builds upon these foundations by integrating density gradient analysis with multi-modal satellite data processing specifically for public transport efficiency assessment. By quantifying the relationship between urban morphology and transport network requirements through our proposed metrics, we provide a novel computational framework that bridges urban remote sensing and transport planning disciplines.
 
@@ -76,17 +56,43 @@ Our work builds upon these foundations by integrating density gradient analysis 
 
 ### 3.1 Data Sources and Preprocessing
 
-Our approach utilizes optical satellite imagery and Synthetic Aperture Radar (SAR) imagery from the Copernicus Data Space. Preprocessing includes image registration, conversion to standard pixel resolution (20m per pixel), and normalization.
+Our approach utilizes optical satellite imagery and Synthetic Aperture Radar (SAR) imagery from the Copernicus Data Space [1-3]. The multi-modal nature of our dataset leverages the complementary strengths of both data types: optical imagery provides visual features and textural information, while SAR offers penetration capability and illumination-independent measurements of urban structures [34, 35].
+
+For our analysis pipeline, we use:
+- Optical satellite images (RGB format)
+- SAR backscatter intensity images (grayscale)
+
+Preprocessing includes:
+- Image registration to ensure spatial alignment between optical and SAR data
+- Standardization to a uniform pixel resolution (20m per pixel)
+- Normalization of intensity values to comparable ranges
+- Edge preservation to maintain critical urban boundaries during processing
 
 ### 3.2 Urban Structure Analysis Pipeline
 
-Our methodology follows these key steps:
-1. Edge detection and density mapping from optical imagery
-2. SAR imagery processing for building structure identification
-3. Multi-modal data fusion of optical and SAR data
-4. Urban area segmentation (water, terrain, urban)
-5. Urban center identification based on density thresholds
-6. Distance-based density gradient calculation
+Our methodology follows a systematic workflow as illustrated in Figure 1. The process consists of several key sequential steps:
+
+![Urban Density Gradient Analysis Methodology Pipeline](methodology-diagram)
+
+**Figure 1: Urban Density Gradient Analysis Methodology Pipeline**
+
+1. **Edge detection and density mapping from optical imagery**: 
+   We apply Sobel operators to identify structural boundaries in optical images. These edge maps provide critical information about the spatial organization of urban features. Edge density is then calculated using Gaussian blurring to create a continuous density field that highlights areas with concentrated structural elements.
+
+2. **SAR imagery processing for building structure identification**:
+   SAR backscatter data is particularly sensitive to building structures due to corner reflections and multiple bounces from vertical surfaces [35, 37]. We normalize the SAR data for integration with optical-derived features to ensure comparable intensity scales.
+
+3. **Multi-modal data fusion of optical and SAR data**:
+   We combine the edge density information from optical imagery with the structural information from SAR data to create a comprehensive urban density map. To remove noise while preserving important structural edges, we apply Non-Local Means denoising, which is particularly effective at maintaining sharp transitions in urban boundaries.
+
+4. **Urban area segmentation**:
+   Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories: water, terrain, and urban areas. Morphological operations are then applied to refine the urban mask and remove noise. To ensure meaningful urban analysis, we filter out small disconnected patches that may represent isolated buildings or processing artifacts.
+
+5. **Urban center identification**:
+   Urban centers are identified as regions with particularly high density values, defined by the `urban_center_threshold` parameter. This approach aligns with established methodologies for identifying urban centers from remote sensing data [38, 40].
+
+6. **Distance-based density gradient calculation**:
+   We calculate how urban density changes with distance from identified urban centers using a Euclidean distance transform. For each distance increment, we calculate the mean density of all urban pixels at that distance, creating a density-distance profile that characterizes the urban structure.
 
 ### 3.3 Density Gradient Metrics
 
@@ -94,7 +100,11 @@ We calculate two key metrics for each analyzed city:
 
 1. **Density Gradient Coefficient (α)**: The slope of the regression line through local minima in the density-distance curve, measured in units per kilometer. This value indicates how rapidly urban density decreases with distance from centers.
 
-2. **Minimum Effective Distance (LD)**: The distance at which urban density reaches a target threshold value considered minimal for efficient public transport service.
+   The α coefficient provides a quantitative measure of urban compactness, analogous to the exponential decay parameter in Clark's urban density model [17], but adapted for multi-modal satellite data. Steeper gradients (more negative α values) typically indicate more compact urban forms with rapid density decreases moving away from centers.
+
+2. **Minimum Effective Distance (LD)**: The distance at which urban density reaches a target threshold value considered minimal for efficient public transport service. This is calculated as the x-intercept of the regression line at the target density.
+
+   This metric directly relates to Newman and Kenworthy's [28] and Cervero and Guerra's [29] findings on minimum density thresholds for viable public transport. It represents the effective radius within which public transport service is likely to be efficient based on density patterns.
 
 ### 3.4 Urban Morphology Classification
 
@@ -104,7 +114,15 @@ We classify cities based on their density gradient plots:
 
 2. **Polycentric Cities**: Exhibit multiple peaks in the density-distance curve, indicating several urban centers of varying intensity.
 
-The peak detection algorithm identifies local maxima in the density gradient plot with a prominence threshold scaled to the data range.
+The peak detection algorithm identifies local maxima in the density gradient plot with a prominence threshold scaled to the data range. This classification methodology aligns with established urban morphology theories from Bertaud [25] and Anas et al. [23], providing a quantitative basis for distinguishing between different urban spatial structures using satellite data.
+
+Our approach not only identifies multiple centers in polycentric cities but also quantifies their relative importance and spatial relationships. This information is crucial for designing efficient public transport networks that serve complex urban spatial structures.
+
+### 3.5 Validation and Error Assessment
+
+To validate our gradient analysis, we calculate the Mean Squared Error (MSE) between the actual density values and the fitted regression line. This metric provides a quantitative assessment of how well our linear gradient model fits the observed urban density pattern, with lower values indicating better fit.
+
+For cities with complex morphologies, the MSE serves as an indicator of whether a simple linear gradient model is appropriate or if more sophisticated approaches, such as piecewise regression or non-linear models, might better capture the urban structure.
 
 ## 4. Case Studies
 
@@ -251,11 +269,9 @@ Future work could extend this approach by:
 
 37. Gamba, P., & Dell'Acqua, F. (2016). Multi-resolution Data Fusion for Urban Area Characterization. In Global Urban Monitoring and Assessment through Earth Observation (pp. 91-106). CRC Press.
 
-38. Seto, K.C., & Fragkias, M. (2005). Quantifying Spatiotemporal Patterns of Urban Land-use Change in Four Cities of China with Time Series Landscape Metrics. Landscape Ecology, 20(7), 871-888.
+38. Li, X., Gong, P., & Liang, L. (2015). A 30-Year (1984–2013) Record of Annual Urban Dynamics of Beijing City Derived from Landsat Data. Remote Sensing of Environment, 166, 78-90.
 
-39. Li, X., Gong, P., & Liang, L. (2015). A 30-Year (1984–2013) Record of Annual Urban Dynamics of Beijing City Derived from Landsat Data. Remote Sensing of Environment, 166, 78-90.
-
-40. Taubenböck, H., Weigand, M., Esch, T., Staab, J., Wurm, M., Mast, J., & Dech, S. (2019). A New Ranking of the World's Largest Cities—Do Administrative Units Obscure Morphological Realities? Remote Sensing of Environment, 232, 111353.
+39. Taubenböck, H., Weigand, M., Esch, T., Staab, J., Wurm, M., Mast, J., & Dech, S. (2019). A New Ranking of the World's Largest Cities—Do Administrative Units Obscure Morphological Realities? Remote Sensing of Environment, 232, 111353.
 
 *[Additional references to be added as needed]*
 
