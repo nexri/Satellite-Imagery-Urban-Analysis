@@ -88,12 +88,7 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 4. **Urban area segmentation**:
    Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories using the following threshold-based classification:
 
-   $$S(x,y) =
-   \begin{cases}
-   1 \text{ (Water)} & \text{if } \rho(x,y) < \tau_{water} \\
-   2 \text{ (Terrain)} & \text{if } \tau_{water} \leq \rho(x,y) < \tau_{urban} \\
-   3 \text{ (Urban)} & \text{if } \rho(x,y) \geq \tau_{urban}
-   \end{cases}$$
+   $$S(x,y) = \begin{cases} 1 \text{ (Water)} & \text{if } \rho(x,y) < \tau_{water}, \\ 2 \text{ (Terrain)} & \text{if } \tau_{water} \leq \rho(x,y) < \tau_{urban}, \\ 3 \text{ (Urban)} & \text{if } \rho(x,y) \geq \tau_{urban} \end{cases}$$
 
    Where:
    - $S(x,y)$ is the segmentation class at pixel location $(x,y)$
