@@ -146,7 +146,7 @@ $$
 
    To quantify this relationship systematically, we implement the following approach:
 
-1. **Distance Transform**: Using the identified urban center points as reference locations, we apply a Euclidean distance transform to create a distance map where each pixel value represents its distance from the nearest urban center:
+**a. Distance Transform**: Using the identified urban center points as reference locations, we apply a Euclidean distance transform to create a distance map where each pixel value represents its distance from the nearest urban center:
 
 $$
 D(x,y) = \min_{(c_x,c_y) \in C} \sqrt{(x-c_x)^2 + (y-c_y)^2}
@@ -156,7 +156,7 @@ $$
    - $D(x,y)$ is the distance value at pixel location $(x,y)$
    - $C$ is the set of all urban center points (locations where urban density exceeds the center threshold)
 
-2. **Urban Area Filtering**: We extract distances and densities only for pixels within urban areas:
+**b. Urban Area Filtering**: We extract distances and densities only for pixels within urban areas:
 
 $$
 D_{urban} = \{D(x,y) \mid (x,y) \in U\}
@@ -170,7 +170,7 @@ $$
    - $U$ is the set of all urban pixels (as identified in our segmentation)
    - This ensures our gradient analysis focuses only on built-up areas
 
-3. **Distance Binning and Mean Density Calculation**: For each integer distance value, we calculate the mean density of urban pixels at that distance:
+**c. Distance Binning and Mean Density Calculation**: For each integer distance value, we calculate the mean density of urban pixels at that distance:
 
 $$
 \rho(d) = \frac{1}{|P_d|} \sum_{p \in P_d} \rho(p)
