@@ -88,14 +88,14 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 4. **Urban area segmentation**:
    Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories using the following threshold-based classification:
 
-   $$
-   S(x,y) =
-   \begin{cases}
-     1 \text{ (Water)}, & \text{if } \rho(x,y) < \tau_{water} \\
-     2 \text{ (Terrain)}, & \text{if } \tau_{water} \leq \rho(x,y) < \tau_{urban} \\
-     3 \text{ (Urban)}, & \text{if } \rho(x,y) \geq \tau_{urban}
-   \end{cases}
-   $$
+$$
+S(x,y) =
+\begin{cases}
+  1 \text{ (Water)}, & \text{if } \rho(x,y) < \tau_{water} \\
+  2 \text{ (Terrain)}, & \text{if } \tau_{water} \leq \rho(x,y) < \tau_{urban} \\
+  3 \text{ (Urban)}, & \text{if } \rho(x,y) \geq \tau_{urban}
+\end{cases}
+$$
 
    Where:
    - $S(x,y)$ is the segmentation class at pixel location $(x,y)$
@@ -125,13 +125,13 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 5. **Urban center identification**:
    Urban centers are identified as regions with particularly high density values, defined by:
 
-   $$
-   C(x,y) =
-   \begin{cases}
-     1, & \text{if } \rho(x,y) > \tau_{center} \text{ and } U_{final}(x,y) = 1 \\
-     0, & \text{otherwise}
-   \end{cases}
-   $$
+$$
+C(x,y) =
+\begin{cases}
+  1, & \text{if } \rho(x,y) > \tau_{center} \text{ and } U_{final}(x,y) = 1 \\
+  0, & \text{otherwise}
+\end{cases}
+$$
 
    Where:
    - $C(x,y)$ indicates whether pixel $(x,y)$ is part of an urban center
@@ -148,9 +148,9 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 
    **a. Distance Transform**: Using the identified urban center points as reference locations, we apply a Euclidean distance transform to create a distance map where each pixel value represents its distance from the nearest urban center:
 
-   $$
-   D(x,y) = \min_{(c_x,c_y) \in C} \sqrt{(x-c_x)^2 + (y-c_y)^2}
-   $$
+$$
+D(x,y) = \min_{(c_x,c_y) \in C} \sqrt{(x-c_x)^2 + (y-c_y)^2}
+$$
 
    Where:
    - $D(x,y)$ is the distance value at pixel location $(x,y)$
@@ -158,13 +158,13 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 
    **b. Urban Area Filtering**: We extract distances and densities only for pixels within urban areas:
 
-   $$
-   D_{urban} = \{D(x,y) \mid (x,y) \in U\}
-   $$
+$$
+D_{urban} = \{D(x,y) \mid (x,y) \in U\}
+$$
 
-   $$
-   \rho_{urban} = \{\rho(x,y) \mid (x,y) \in U\}
-   $$
+$$
+\rho_{urban} = \{\rho(x,y) \mid (x,y) \in U\}
+$$
 
    Where:
    - $U$ is the set of all urban pixels (as identified in our segmentation)
@@ -172,9 +172,9 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 
    **c. Distance Binning and Mean Density Calculation**: For each integer distance value, we calculate the mean density of urban pixels at that distance:
 
-   $$
-   \rho(d) = \frac{1}{|P_d|} \sum_{p \in P_d} \rho(p)
-   $$
+$$
+\rho(d) = \frac{1}{|P_d|} \sum_{p \in P_d} \rho(p)
+$$
 
    Where:
    - $P_d = \{p \in U \mid d \leq D(p) < d+1\}$ is the set of urban pixels with distance in bin $d$
@@ -192,9 +192,9 @@ We calculate two key metrics for each analyzed city:
 
    We calculate α through linear regression on selected density minima points using:
 
-   $$
-   \alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}
-   $$
+$$
+\alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}
+$$
 
    Where:
    - $d_i$ is the distance from urban center (in km) at point $i$
@@ -207,9 +207,9 @@ We calculate two key metrics for each analyzed city:
 
    We calculate LD using the formula:
 
-   $$
-   LD = \frac{\rho_{target} - \beta}{\alpha}
-   $$
+$$
+LD = \frac{\rho_{target} - \beta}{\alpha}
+$$
 
    Where:
    - $\rho_{target}$ is the target density threshold (typically set to the minimum density found in urban areas)
