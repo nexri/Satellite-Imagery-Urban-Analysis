@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="750" viewBox="0 0 800 750">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="930" viewBox="0 0 800 820">
   <defs>
     <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
       <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.3"/>
@@ -100,12 +100,12 @@
     <path d="M396,686 L400,690 L404,686" stroke="#666" stroke-width="2" fill="none" />
   </g>
 
-  <!-- Output Metrics Box -->
-  <g transform="translate(400, 710)">
-    <rect x="-200" y="0" width="400" height="100" rx="8" ry="8" fill="url(#outputGradient)" stroke="#9c27b0" stroke-width="2" filter="url(#shadow)"/>
-    <text x="0" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Output Metrics</text>
-    <text x="0" y="50" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Density Gradient Coefficient (α)</text>
-    <text x="0" y="70" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Minimum Effective Distance (LD)</text>
-    <text x="0" y="90" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">3. Urban Morphology Classification (Mono/Polycentric)</text>
+  <!-- Output Metrics Box - Made taller and moved down -->
+  <g transform="translate(400, 730)">
+    <rect x="-200" y="0" width="400" height="110" rx="8" ry="8" fill="url(#outputGradient)" stroke="#9c27b0" stroke-width="2" filter="url(#shadow)"/>
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Output Metrics</text>
+    <text x="0" y="55" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Density Gradient Coefficient (α)</text>
+    <text x="0" y="75" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Minimum Effective Distance (LD)</text>
+    <text x="0" y="95" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">3. Urban Morphology Classification (Mono/Polycentric)</text>
   </g>
 </svg>
