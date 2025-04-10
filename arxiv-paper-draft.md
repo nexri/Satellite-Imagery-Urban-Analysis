@@ -72,7 +72,7 @@ Preprocessing includes:
 
 Our methodology follows a systematic workflow as illustrated in Figure 1. The process consists of several key sequential steps:
 
-![Urban Density Gradient Analysis Methodology Pipeline](methodology-diagram.svg)
+![Urban Density Gradient Analysis Methodology Pipeline](methodology-diagram)
 
 **Figure 1: Urban Density Gradient Analysis Methodology Pipeline**
 
@@ -86,10 +86,53 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
    We combine the edge density information from optical imagery with the structural information from SAR data to create a comprehensive urban density map. To remove noise while preserving important structural edges, we apply Non-Local Means denoising, which is particularly effective at maintaining sharp transitions in urban boundaries.
 
 4. **Urban area segmentation**:
-   Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories: water, terrain, and urban areas. Morphological operations are then applied to refine the urban mask and remove noise. To ensure meaningful urban analysis, we filter out small disconnected patches that may represent isolated buildings or processing artifacts.
+   Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories using the following threshold-based classification:
+
+   $S(x,y) = \begin{cases}
+   1 \text{ (Water)} & \text{if } \rho(x,y) < \tau_{water} \\
+   2 \text{ (Terrain)} & \text{if } \tau_{water} \leq \rho(x,y) < \tau_{urban} \\
+   3 \text{ (Urban)} & \text{if } \rho(x,y) \geq \tau_{urban}
+   \end{cases}$
+
+   Where:
+   - $S(x,y)$ is the segmentation class at pixel location $(x,y)$
+   - $\rho(x,y)$ is the combined density value at pixel location $(x,y)$
+   - $\tau_{water} = 0.4$ is the water threshold
+   - $\tau_{urban} = 1.25$ is the urban threshold
+
+   Morphological operations are then applied to refine the urban mask and remove noise:
+   
+   $U_{refined} = \text{Close}(\text{Dilate}(U_{initial}, k), k)$
+   
+   Where:
+   - $U_{initial}$ is the initial urban mask where $S(x,y) = 3$
+   - $k$ is a $5 \times 5$ structuring element
+   - Dilate and Close are standard morphological operations
+
+   To ensure meaningful urban analysis, we filter out small disconnected patches:
+   
+   $U_{final}(x,y) = \begin{cases}
+   1 & \text{if } (x,y) \in C_i \text{ and } \text{Area}(C_i) \geq 100 \text{ pixels} \\
+   0 & \text{otherwise}
+   \end{cases}$
+   
+   Where $C_i$ represents the $i$-th connected component in the urban mask.
 
 5. **Urban center identification**:
-   Urban centers are identified as regions with particularly high density values, defined by the `urban_center_threshold` parameter. This approach aligns with established methodologies for identifying urban centers from remote sensing data [38, 40].
+   Urban centers are identified as regions with particularly high density values, defined by:
+   
+   $C(x,y) = \begin{cases}
+   1 & \text{if } \rho(x,y) > \tau_{center} \text{ and } U_{final}(x,y) = 1 \\
+   0 & \text{otherwise}
+   \end{cases}$
+   
+   Where:
+   - $C(x,y)$ indicates whether pixel $(x,y)$ is part of an urban center
+   - $\rho(x,y)$ is the combined density value
+   - $\tau_{center} = 1.4$ is the urban center threshold
+   - $U_{final}(x,y)$ is the final urban mask
+
+   This approach aligns with established methodologies for identifying urban centers from remote sensing data [38, 40].
 
 6. **Distance-based density gradient calculation**:
    We calculate how urban density changes with distance from identified urban centers using a Euclidean distance transform. For each distance increment, we calculate the mean density of all urban pixels at that distance, creating a density-distance profile that characterizes the urban structure.
