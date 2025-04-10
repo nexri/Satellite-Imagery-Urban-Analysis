@@ -22,9 +22,9 @@ The urban density gradient, which describes how building and population density 
 
 Urban density gradient analysis originated with the classic monocentric city model pioneered by Alonso [14], Muth [15], and Mills [16]. This foundational work established the negative exponential density function describing how population density typically decreases with distance from the city center. Clark's [17] empirical work validated this model across numerous cities, confirming that population density follows the pattern:
 
-$D(r) = D_0 e^{-αr}$
+$$D(r) = D_0 e^{-\alpha r}$$
 
-where $D(r)$ is the density at distance $r$ from the center, $D_0$ is the central density, and $α$ is the density gradient coefficient.
+where $D(r)$ is the density at distance $r$ from the center, $D_0$ is the central density, and $\alpha$ is the density gradient coefficient.
 
 Bertaud and Malpezzi [18] expanded this analysis to a global dataset of 48 cities, demonstrating how density gradients vary across different urban contexts and development stages, highlighting the relationship between density patterns and transportation efficiency. Cervero and Kockelman [19] further developed the connection between urban form and transport planning through their "3Ds" framework—density, diversity, and design—to explain how built environment characteristics influence travel behavior. Ewing and Cervero [20] later expanded this to the "5Ds" by adding destination accessibility and distance to transit, firmly establishing the theoretical link between urban density patterns and transport efficiency.
 
@@ -88,12 +88,12 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 4. **Urban area segmentation**:
    Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories using the following threshold-based classification:
 
-   $S(x,y) = 
+   $$S(x,y) = 
    \begin{cases} 
    1 \text{ (Water)} & \text{if } \rho(x,y) < \tau_{water} \\
    2 \text{ (Terrain)} & \text{if } \tau_{water} \leq \rho(x,y) < \tau_{urban} \\
    3 \text{ (Urban)} & \text{if } \rho(x,y) \geq \tau_{urban}
-   \end{cases}$
+   \end{cases}$$
 
    Where:
    - $S(x,y)$ is the segmentation class at pixel location $(x,y)$
@@ -103,7 +103,7 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 
    Morphological operations are then applied to refine the urban mask and remove noise:
    
-   $U_{refined} = \text{Close}(\text{Dilate}(U_{initial}, k), k)$
+   $$U_{refined} = \text{Close}(\text{Dilate}(U_{initial}, k), k)$$
    
    Where:
    - $U_{initial}$ is the initial urban mask where $S(x,y) = 3$
@@ -112,22 +112,22 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
 
    To ensure meaningful urban analysis, we filter out small disconnected patches:
    
-   $U_{final}(x,y) = 
+   $$U_{final}(x,y) = 
    \begin{cases}
    1 & \text{if } (x,y) \in C_i \text{ and } \text{Area}(C_i) \geq 100 \text{ pixels} \\
    0 & \text{otherwise}
-   \end{cases}$
+   \end{cases}$$
    
    Where $C_i$ represents the $i$-th connected component in the urban mask.
 
 5. **Urban center identification**:
    Urban centers are identified as regions with particularly high density values, defined by:
    
-   $C(x,y) = 
+   $$C(x,y) = 
    \begin{cases}
    1 & \text{if } \rho(x,y) > \tau_{center} \text{ and } U_{final}(x,y) = 1 \\
    0 & \text{otherwise}
-   \end{cases}$
+   \end{cases}$$
    
    Where:
    - $C(x,y)$ indicates whether pixel $(x,y)$ is part of an urban center
@@ -148,7 +148,7 @@ We calculate two key metrics for each analyzed city:
 
    We calculate α through linear regression on selected density minima points using:
 
-   $\alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}$
+   $$\alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}$$
 
    Where:
    - $d_i$ is the distance from urban center (in km) at point $i$
@@ -161,7 +161,7 @@ We calculate two key metrics for each analyzed city:
 
    We calculate LD using the formula:
 
-   $LD = \frac{\rho_{target} - \beta}{\alpha}$
+   $$LD = \frac{\rho_{target} - \beta}{\alpha}$$
 
    Where:
    - $\rho_{target}$ is the target density threshold (typically set to the minimum density found in urban areas)
@@ -180,7 +180,7 @@ We classify cities based on their density gradient plots:
 
 The peak detection algorithm identifies local maxima in the density gradient plot with a prominence threshold scaled to the data range. Mathematically, we identify peaks where:
 
-$\rho_i > \rho_{i-1} \text{ and } \rho_i > \rho_{i+1} \text{ and } \rho_i - \min(\rho_L, \rho_R) > p \cdot (\rho_{max} - \rho_{min})$
+$$\rho_i > \rho_{i-1} \text{ and } \rho_i > \rho_{i+1} \text{ and } \rho_i - \min(\rho_L, \rho_R) > p \cdot (\rho_{max} - \rho_{min})$$
 
 Where:
 - $\rho_i$ is the density at point $i$
@@ -196,7 +196,7 @@ Our approach not only identifies multiple centers in polycentric cities but also
 
 To validate our gradient analysis, we calculate the Mean Squared Error (MSE) between the actual density values and the fitted regression line:
 
-$MSE = \frac{1}{n}\sum_{i=1}^{n}(\rho_i - (\alpha \cdot d_i + \beta))^2$
+$$MSE = \frac{1}{n}\sum_{i=1}^{n}(\rho_i - (\alpha \cdot d_i + \beta))^2$$
 
 Where:
 - $\rho_i$ is the actual density at distance $d_i$
