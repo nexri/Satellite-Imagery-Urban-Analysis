@@ -100,9 +100,27 @@ We calculate two key metrics for each analyzed city:
 
 1. **Density Gradient Coefficient (α)**: The slope of the regression line through local minima in the density-distance curve, measured in units per kilometer. This value indicates how rapidly urban density decreases with distance from centers.
 
+   We calculate α through linear regression on selected density minima points using:
+
+   $\alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}$
+
+   Where:
+   - $d_i$ is the distance from urban center (in km) at point $i$
+   - $\rho_i$ is the urban density value at point $i$
+   - $n$ is the number of local minima points identified in the density gradient
+
    The α coefficient provides a quantitative measure of urban compactness, analogous to the exponential decay parameter in Clark's urban density model [17], but adapted for multi-modal satellite data. Steeper gradients (more negative α values) typically indicate more compact urban forms with rapid density decreases moving away from centers.
 
 2. **Minimum Effective Distance (LD)**: The distance at which urban density reaches a target threshold value considered minimal for efficient public transport service. This is calculated as the x-intercept of the regression line at the target density.
+
+   We calculate LD using the formula:
+
+   $LD = \frac{\rho_{target} - \beta}{\alpha}$
+
+   Where:
+   - $\rho_{target}$ is the target density threshold (typically set to the minimum density found in urban areas)
+   - $\beta$ is the y-intercept of the regression line
+   - $\alpha$ is the density gradient coefficient calculated above
 
    This metric directly relates to Newman and Kenworthy's [28] and Cervero and Guerra's [29] findings on minimum density thresholds for viable public transport. It represents the effective radius within which public transport service is likely to be efficient based on density patterns.
 
@@ -114,13 +132,33 @@ We classify cities based on their density gradient plots:
 
 2. **Polycentric Cities**: Exhibit multiple peaks in the density-distance curve, indicating several urban centers of varying intensity.
 
-The peak detection algorithm identifies local maxima in the density gradient plot with a prominence threshold scaled to the data range. This classification methodology aligns with established urban morphology theories from Bertaud [25] and Anas et al. [23], providing a quantitative basis for distinguishing between different urban spatial structures using satellite data.
+The peak detection algorithm identifies local maxima in the density gradient plot with a prominence threshold scaled to the data range. Mathematically, we identify peaks where:
+
+$\rho_i > \rho_{i-1}$ and $\rho_i > \rho_{i+1}$ and $\rho_i - \min(\rho_L, \rho_R) > p \cdot (\rho_{max} - \rho_{min})$
+
+Where:
+- $\rho_i$ is the density at point $i$
+- $\rho_L$ and $\rho_R$ are the lowest density values between point $i$ and the nearest higher peaks to the left and right
+- $p$ is the prominence factor (typically 0.02)
+- $\rho_{max}$ and $\rho_{min}$ are the maximum and minimum density values across the entire profile
+
+This classification methodology aligns with established urban morphology theories from Bertaud [25] and Anas et al. [23], providing a quantitative basis for distinguishing between different urban spatial structures using satellite data.
 
 Our approach not only identifies multiple centers in polycentric cities but also quantifies their relative importance and spatial relationships. This information is crucial for designing efficient public transport networks that serve complex urban spatial structures.
 
 ### 3.5 Validation and Error Assessment
 
-To validate our gradient analysis, we calculate the Mean Squared Error (MSE) between the actual density values and the fitted regression line. This metric provides a quantitative assessment of how well our linear gradient model fits the observed urban density pattern, with lower values indicating better fit.
+To validate our gradient analysis, we calculate the Mean Squared Error (MSE) between the actual density values and the fitted regression line:
+
+$MSE = \frac{1}{n}\sum_{i=1}^{n}(\rho_i - (\alpha \cdot d_i + \beta))^2$
+
+Where:
+- $\rho_i$ is the actual density at distance $d_i$
+- $\alpha$ is the density gradient coefficient
+- $\beta$ is the y-intercept of the regression line
+- $n$ is the number of points in the density gradient
+
+This metric provides a quantitative assessment of how well our linear gradient model fits the observed urban density pattern, with lower values indicating better fit.
 
 For cities with complex morphologies, the MSE serves as an indicator of whether a simple linear gradient model is appropriate or if more sophisticated approaches, such as piecewise regression or non-linear models, might better capture the urban structure.
 
