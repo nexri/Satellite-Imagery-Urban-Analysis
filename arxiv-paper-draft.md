@@ -152,7 +152,9 @@ We calculate two key metrics for each analyzed city:
 
    We calculate α through linear regression on selected density minima points using:
 
-   $$\alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}$$
+$$
+\alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}
+$$
 
    Where:
    - $d_i$ is the distance from urban center (in km) at point $i$
