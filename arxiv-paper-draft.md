@@ -86,7 +86,7 @@ Our methodology follows a systematic workflow as illustrated in Figure 1. The pr
    We combine the edge density information from optical imagery with the structural information from SAR data to create a comprehensive urban density map. To remove noise while preserving important structural edges, we apply Non-Local Means denoising, which is particularly effective at maintaining sharp transitions in urban boundaries.
 
 4. **Urban area segmentation**:
-   Using density thresholds derived from our combined image, we segment the urban landscape into three primary categories using the following threshold-based classification:
+   Using density thresholds derived from histogram decomposition of our combined image, we segment the urban landscape into three primary categories. The segmentation is performed using Gaussian mixture model decomposition of the combined image histogram to automatically determine optimal thresholds:
 
 $$
 S(x,y) =
@@ -100,8 +100,16 @@ $$
    Where:
    - $S(x,y)$ is the segmentation class at pixel location $(x,y)$
    - $\rho(x,y)$ is the combined density value at pixel location $(x,y)$
-   - $\tau_{water} = 0.4$ is the water threshold
-   - $\tau_{urban} = 1.25$ is the urban threshold
+   - $\tau_{water}$ is the water threshold determined as the first intersection point between Gaussian components
+   - $\tau_{urban}$ is the urban threshold determined as the second intersection point between Gaussian components
+
+   These thresholds are automatically calculated for each image through the following process:
+
+   1. Decompose the histogram of the combined image into three Gaussian components
+   2. Identify intersection points between adjacent Gaussian components
+   3. Use the first intersection as the water threshold and the second intersection as the urban threshold
+
+   This adaptive approach improves robustness across different images and geographic regions by automatically adjusting thresholds to the specific characteristics of each image.
 
    Morphological operations are then applied to refine the urban mask and remove noise:
 
