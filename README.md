@@ -30,18 +30,23 @@ Satellite data can be obtained from the [Copernicus Data Space](https://browser.
 Key parameters that can be adjusted:
 
 ```python
-# Segmentation thresholds
-water_threshold = 0.4        # Below this value is classified as water
-urban_threshold = 1.25       # Above this value is classified as urban
-urban_center_threshold = 1.4 # Above this value is classified as urban center
-
 # Resolution settings
-satellite_pixel_resolution = 20  # 20m per pixel
+satellite_pixel_resolution = 15  # 15m per pixel
 
 # Scale intervals for plots
 image_x_tick_interval = 5000     # 5km intervals for main maps
 gradient_x_tick_interval = 1000  # 1km intervals for gradient plots
 ```
+
+### Automatic Threshold Calculation
+
+The latest version of the tool automatically calculates the following thresholds using histogram decomposition:
+
+- `water_threshold`: Threshold between water and terrain (calculated from intersection of Gaussian components)
+- `urban_threshold`: Threshold between terrain and urban areas (calculated from intersection of Gaussian components)
+- `urban_center_threshold`: Threshold for urban centers (calculated from urban density analysis)
+
+This eliminates the need for manual threshold adjustment and makes the analysis more adaptive to different satellite imagery inputs.
 
 ## Output Visualizations
 
@@ -64,7 +69,7 @@ The tool generates several visualizations in the `output_data/` folder:
 
 ### 4. Urban Density & Urban Centers
 - `{base_name}_urban_density.png`: Urban density distribution
-- `{base_name}_urban_centers.png`: Urban centers (areas with density above the `urban_center_threshold`)
+- `{base_name}_urban_centers.png`: Urban centers (areas with density above the automatically calculated `urban_center_threshold`)
 
 ### 5. Density Gradients
 - `{base_name}_urban_density_gradient.png`: Plot of density change with distance from urban centers
@@ -81,14 +86,13 @@ input_dir = 'input_data'
 output_dir = 'output_data'
 
 # Input paths
-optical_image_path = os.path.join(input_dir, 'gdansk_optical_1.jpg')
-sar_image_path = os.path.join(input_dir, 'gdansk_sar_1.jpg')
+optical_image_path = os.path.join(input_dir, 'Malbork_2024-10-01-00_00_2024-10-01-23_59_Sentinel-2_Quarterly_Mosaics_True_Color_Cloudless.jpg')
+sar_image_path = os.path.join(input_dir, 'Malbork_2025-04-08-00_00_2025-04-08-23_59_Sentinel-1_IW_VV+VH_VV_-_decibel_gamma0.jpg')
 
 # Run the analysis
 # ... (main code here)
 
 # Results are saved in the output_data folder with the base name from the input file
-# e.g., output_data/gdansk_original.png, output_data/gdansk_urban_density_gradient.png, etc.
 ```
 
 ## Dependencies
