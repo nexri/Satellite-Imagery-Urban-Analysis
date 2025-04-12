@@ -338,15 +338,29 @@ Malbork's difference plot exhibits a notably uniform pattern extending approxima
 
 ## 5. Discussion
 
-### 5.1 Metric Interpretation
-- How to interpret α values for transport planning
-- Significance of LD distances for service coverage
-- Relationship to traditional transport planning metrics
+Our study intentionally selected two Polish urban areas—Malbork and Klodzko—as they represent distinct urban morphologies while sharing comparable regional contexts. This selection enables direct comparative analysis of how different urban forms influence density gradients and their implications for public transport planning.
 
-### 5.2 Limitations and Considerations
-- Resolution constraints of satellite data
-- Temporal variations in urban density
-- Need for ground-truthing and validation
+Malbork (population: approximately 38,500) is a historically significant city in northern Poland characterized by a classic monocentric urban structure. Its development has been shaped by its medieval origins, with the UNESCO World Heritage Teutonic Knights' castle forming a clear historical center [40]. The city's urban fabric radiates outward from this central point, following a relatively uniform pattern typical of traditional European urban development. With an area of approximately 17.2 km², Malbork maintains a moderate population density of about 2,240 people per km².
+
+In contrast, Klodzko (population: approximately 27,000) in southwestern Poland exhibits a more complex polycentric structure. Its development has been significantly constrained by the surrounding mountainous topography of the Kłodzko Valley [41]. The city's urban pattern follows several corridors defined by the valleys, resulting in a more distributed settlement pattern. With an area of approximately 25 km², Klodzko has a lower population density of about 1,080 people per km², reflecting its more dispersed urban form.
+
+Both study areas were analyzed using Copernicus Data Space satellite imagery at an identical 5-meter spatial resolution. This consistent resolution is sufficient to identify individual buildings and street patterns while enabling efficient processing of the entire urban area. The Copernicus database provided high-quality, cloud-free optical imagery and corresponding SAR data for both locations, making them ideal candidates for our multi-modal analysis approach. The selection of these contrasting urban morphologies—one compact and monocentric, the other dispersed and polycentric—within the same national context provides an excellent test case for evaluating the effectiveness of our density gradient methodology for public transport assessment.
+
+The density gradient difference plots (Figure 5) reveal distinctive patterns that quantitatively confirm the qualitative observations of urban morphology evident in the satellite imagery. These differences have significant implications for public transport planning in each city which are revealed or more detaily analized in Figure 6.
+
+![Regional analysis of density gradient differences](figure_6.jpg)
+
+*Figure 6: Regional analysis of urban density gradient differences: (a) Malbork with three distinct regions (left) and (b) Klodzko with three regions (right). Green background indicates uniform regions, and red background highlights highly variable regions. For Malbork, Region 1 (0-1.4 km) shows remarkable uniformity, while Regions 2 (1.4-4.9 km) and 3 (4.9-8.1 km) display increasing variability. For Klodzko, all regions—Region 1 (0-4 km), Region 2 (4-6.2 km), and Region 3 (6.2-8.4 km)—display significant variability with no uniform central region.*
+
+Malbork's difference plot exhibits a remarkably uniform pattern extending approximately 1.4 km from the center (Region 1 in Figure 6a, highlighted in green), with minimal deviation from the regression model. This uniformity indicates a well-defined, coherent urban core with consistent density—a characteristic ideal for hub-based public transport systems. Beyond this 1.4 km radius, the plot begins to show a variable region (Region 2, 1.4-4.9 km) of multiple medium-height peaks, representing secondary density nodes at intermediate distances. At farther distances (Region 3, 4.9-8.1 km), the peaks demonstrate higher amplitude but wider spacing, indicating sparse but concentrated satellite developments. The entire variable region spans from 1.4 to 8.1 km, as clearly visualized in Figure 6a. This pattern aligns with Malbork's visual appearance in both optical and SAR imagery (Figures 2a, 2c), which shows a compact central area surrounded by distinct, separated development clusters.
+
+In contrast, Klodzko's difference plot shows perturbations throughout the entire urban extent, including areas proximal to the center. As illustrated in Figure 6b, Klodzko exhibits a completely variable pattern with no uniform region, with the variable region extending from 0 to 8.4 km. The analysis reveals three distinct regions: Region 1 (0-4 km), Region 2 (4-6.2 km), and Region 3 (6.2-8.4 km), all characterized by significant perturbations. Both perturbation frequency and amplitude increase proportionally with distance from the identified centers. This pattern indicates a less centralized, more heterogeneously distributed urban structure with multiple density nodes of comparable significance. The consistent presence of peaks even near the nominal "center" suggests that Klodzko lacks a dominant central core, reflecting its development constraints imposed by valley topography. These observations are consistent with the optical and SAR imagery analysis (Figures 2b, 2d), which reveals a more dispersed urban pattern following topographical features.
+
+The gradient coefficient (α) values provide further quantitative evidence of the morphological differences between the two cities. Malbork's steeper gradient (α = -0.018/km) compared to Klodzko's more gradual decline (α = -0.013/km) confirms that Malbork has a more centralized urban structure with density decreasing more rapidly with distance from the center. This steeper gradient typically indicates urban forms that can more efficiently support traditional hub-and-spoke public transport networks [28, 29].
+
+The minimum effective distance (LD) metric further illustrates the transport planning implications of these different urban forms. Malbork's LD value of 21.8 km compared to Klodzko's 23.4 km indicates that Klodzko requires a larger service area to effectively cover its population due to its more dispersed development pattern. This finding aligns with established research showing that more compact urban forms generally enable more efficient public transport service coverage [29, 42].
+
+These quantitative differences, derived from our satellite-based methodology, are consistent with the visual interpretation of both the imagery and urban segmentation results presented in the previous sections. The coherence between qualitative observations and quantitative metrics demonstrates the robustness of our approach in characterizing urban morphology from multi-modal satellite data.
 
 ## 6. Conclusions and Future Work
 
