@@ -8,13 +8,13 @@ This paper presents a novel computational approach for evaluating public transpo
 
 Recent advancements in remote sensing technology have greatly expanded access to diverse satellite data types, including optical imagery and Synthetic Aperture Radar (SAR). Platforms such as the Copernicus Data Space, Sentinel Hub, and commercial providers have democratized these datasets for researchers, urban planners, and commercial users [1-3]. This proliferation of open-access satellite data has catalyzed numerous analytical methodologies in urban studies, agriculture, environmental monitoring, and disaster management [4,5].
 
-However, effectively analyzing this vast repository of multi-modal satellite data presents significant challenges, requiring robust computational resources and advanced mathematical modeling capabilities. Traditional methods that rely on manual processing and simplistic modeling often fall short in fully exploiting satellite data's potential [6,7]. In response, an ecosystem of startups and research initiatives has emerged to bridge the gap between complex satellite data and actionable insights, with particular focus on SAR data processing, analytics automation, and user-friendly dissemination [8]. Despite these advancements, there remains a critical need for simple, robust, and computationally efficient methodologies suitable for resource-limited environments where traditional, expensive urban planning methods may not be feasible [9].
+However, effectively analyzing this vast repository of multi-modal satellite data presents significant challenges, requiring robust computational resources and advanced mathematical modeling capabilities. Traditional methods that rely on manual processing and simplistic modeling often fall short in fully exploiting satellite data's potential [6,7]. In response, an ecosystem of startups and research initiatives has emerged to bridge the gap between complex satellite data and actionable insights, with particular focus on SAR data processing, analytics automation, and user-friendly dissemination [8]. Despite these advancements, there remains a critical need for simple, robust, and computationally efficient methodologies suitable for resource-limited environments where traditional, expensive urban planning methods may not be feasible or cost-effective [9].
 
-A pressing global challenge is optimizing transportation infrastructure, which underpins economic growth, urban sustainability, and social equity. In many urban areas, transportation networks—including communications pathways, logistics, and especially public transit systems—lag behind optimal efficiency, contributing to congestion, pollution, and reduced quality of life [10,11]. Addressing this challenge requires innovative approaches capable of rapidly and reliably assessing transportation infrastructure efficiency through spatial urban characteristics.
+A pressing global challenge is optimizing transportation infrastructure, which underpins economic growth, urban sustainability, and social equity. In many urban areas, transportation networks — including communications pathways, logistics, and especially public transit systems — lag behind optimal efficiency, contributing to congestion, pollution, and reduced quality of life [10,11]. Addressing this challenge requires innovative approaches capable of rapidly and reliably assessing transportation infrastructure efficiency through spatial urban characteristics.
 
-This paper proposes a novel computational framework designed to analyze urban density gradients using multi-modal satellite imagery for public transport planning. Our methodology integrates optical and SAR data to efficiently segment urban areas, identify urban centers, and quantify spatial density distributions. We introduce two key metrics—the density gradient coefficient (α) and the minimum effective distance (LD)—offering urban planners a straightforward yet powerful means of preliminary assessment that directly connects urban morphology to public transport optimization strategies. This approach provides significant advantages in accessibility, resource utilization, and scalability, enabling robust transportation infrastructure assessment for diverse urban configurations, including monocentric and polycentric city structures [12,13].
+This paper proposes a novel computational approach designed to analyze urban density gradients using multi-modal satellite imagery for public transport planning. Our methodology integrates optical and SAR data to efficiently segment urban areas, identify urban centers, and quantify spatial density distributions. We introduce two key metrics — the density gradient coefficient (α) and the minimum effective distance (LD) — offering urban planners a straightforward yet powerful means of preliminary assessment that directly connects urban morphology to public transport optimization strategies. This approach provides significant advantages in accessibility, resource utilization, and scalability, enabling robust transportation infrastructure assessment for diverse urban configurations, including monocentric and polycentric city structures [12,13].
 
-The urban density gradient, which describes how building and population density change with distance from urban centers, has significant implications for public transport planning. Steep gradients (high α values) typically indicate compact urban forms that efficiently support mass transit, while shallow gradients suggest sprawling development patterns requiring different transport solutions. Through our analysis, we demonstrate that cities can be categorized based on their gradient density plots—with clear distinctions between monocentric cities (showing a single dominant peak) and polycentric cities (exhibiting multiple density peaks). These morphological differences have direct implications for optimal public transport network design.
+The urban density gradient, which describes how building and population density change with distance from urban centers, has significant implications for public transport planning. Steep gradients (high α values) typically indicate compact urban forms that efficiently support mass transit, while shallow gradients suggest sprawling development patterns requiring different transport solutions. Through our analysis, we demonstrate that cities can be categorized based on their gradient density plots — with clear distinctions between monocentric cities (showing a single dominant peak) and polycentric cities (exhibiting multiple density peaks). These morphological differences have direct implications for optimal public transport network design.
 
 ## 2. Related Work
 
@@ -59,12 +59,14 @@ Our work builds upon these foundations by integrating density gradient analysis 
 Our approach utilizes optical satellite imagery and Synthetic Aperture Radar (SAR) imagery from the Copernicus Data Space [1-3]. The multi-modal nature of our dataset leverages the complementary strengths of both data types: optical imagery provides visual features and textural information, while SAR offers penetration capability and illumination-independent measurements of urban structures [34, 35].
 
 For our analysis pipeline, we use:
-- Optical satellite images (RGB format)
-- SAR backscatter intensity images (grayscale)
+
+- Optical Sentinel-2 satellite true color images (RGB format)
+- SAR Sentinel-1 backscatter intensity images (Interferometric Wide Swath, VV-polarisation)
 
 Preprocessing includes:
+
 - Image registration to ensure spatial alignment between optical and SAR data
-- Standardization to a uniform pixel resolution (20m per pixel)
+- Standardization to a uniform pixel resolution
 - Normalization of intensity values to comparable ranges
 - Edge preservation to maintain critical urban boundaries during processing
 
@@ -97,38 +99,42 @@ S(x,y) =
 \end{cases}
 $$
 
-   Where:
-   - $S(x,y)$ is the segmentation class at pixel location $(x,y)$
-   - $\rho(x,y)$ is the combined density value at pixel location $(x,y)$
-   - $\tau_{water}$ is the water threshold determined as the first intersection point between Gaussian components
-   - $\tau_{urban}$ is the urban threshold determined as the second intersection point between Gaussian components
+Where:
 
-   These thresholds are automatically calculated for each image through the following process:
+- $S(x,y)$ is the segmentation class at pixel location $(x,y)$
+- $\rho(x,y)$ is the combined density value at pixel location $(x,y)$
+- $\tau_{water}$ is the water threshold determined as the first intersection point between Gaussian components
+- $\tau_{urban}$ is the urban threshold determined as the second intersection point between Gaussian components
 
-   1. Decompose the histogram of the combined image into three Gaussian components
-   2. Identify intersection points between adjacent Gaussian components
-   3. Use the first intersection as the water threshold and the second intersection as the urban threshold
+These thresholds are automatically calculated for each image through the following process:
 
-   This adaptive approach improves robustness across different images and geographic regions by automatically adjusting thresholds to the specific characteristics of each image.
+1.  Decompose the histogram of the combined image into three Gaussian components
+2.  Identify intersection points between adjacent Gaussian components
+3.  Use the first intersection as the water threshold and the second intersection as the urban threshold
 
-   Morphological operations are then applied to refine the urban mask and remove noise:
+This adaptive approach improves robustness across different images and geographic regions by automatically adjusting thresholds to the specific characteristics of each image.
 
-   $$U_{refined} = \text{Close}(\text{Dilate}(U_{initial}, k), k)$$
+Morphological operations are then applied to refine the urban mask and remove noise:
 
-   Where:
-   - $U_{initial}$ is the initial urban mask where $S(x,y) = 3$
-   - $k$ is a $5 \times 5$ structuring element
-   - Dilate and Close are standard morphological operations
+$$U_{refined} = \text{Close}(\text{Dilate}(U_{initial}, k), k)$$
 
-   To ensure meaningful urban analysis, we filter out small disconnected patches:
+Where:
 
-   $$U_{final}(x,y) =
-   \begin{cases}
-   1 & \text{if } (x,y) \in C_i \text{ and } \text{Area}(C_i) \geq 100 \text{ pixels} \\
-   0 & \text{otherwise}
-   \end{cases}$$
+- $U_{initial}$ is the initial urban mask where $S(x,y) = 3$
+- $k$ is a $5 \times 5$ structuring element
+- Dilate and Close are standard morphological operations
 
-   Where $C_i$ represents the $i$-th connected component in the urban mask.
+To ensure meaningful urban analysis, we filter out small disconnected patches:
+
+$$
+U_{final}(x,y) =
+\begin{cases}
+1 & \text{if } (x,y) \in C_i \text{ and } \text{Area}(C_i) \geq 100 \text{ pixels} \\
+0 & \text{otherwise}
+\end{cases}
+$$
+
+Where $C_i$ represents the $i$-th connected component in the urban mask.
 
 5. **Urban center identification**:
    Urban centers are identified as regions with particularly high density values, defined by:
@@ -141,13 +147,14 @@ C(x,y) =
 \end{cases}
 $$
 
-   Where:
-   - $C(x,y)$ indicates whether pixel $(x,y)$ is part of an urban center
-   - $\rho(x,y)$ is the combined density value
-   - $\tau_{center} = 1.4$ is the urban center threshold
-   - $U_{final}(x,y)$ is the final urban mask
+Where:
 
-   This approach aligns with established methodologies for identifying urban centers from remote sensing data [38, 40].
+- $C(x,y)$ indicates whether pixel $(x,y)$ is part of an urban center
+- $\rho(x,y)$ is the combined density value
+- $\tau_{center} = 1.4$ is the urban center threshold
+- $U_{final}(x,y)$ is the final urban mask
+
+This approach aligns with established methodologies for identifying urban centers from remote sensing data [38, 40].
 
 6. **Distance-based density gradient calculation**:
    We calculate how urban density changes with distance from identified urban centers using a Euclidean distance transform. For each distance increment, we calculate the mean density of all urban pixels at that distance, creating a density-distance profile that characterizes the urban structure.
@@ -160,11 +167,12 @@ $$
 D(x,y) = \min_{(c_x,c_y) \in C} \sqrt{(x-c_x)^2 + (y-c_y)^2}
 $$
 
-   Where:
-   - $D(x,y)$ is the distance value at pixel location $(x,y)$
-   - $C$ is the set of all urban center points (locations where urban density exceeds the center threshold)
+Where:
 
-   **b. Urban Area Filtering**: We extract distances and densities only for pixels within urban areas:
+- $D(x,y)$ is the distance value at pixel location $(x,y)$
+- $C$ is the set of all urban center points (locations where urban density exceeds the center threshold)
+
+**b. Urban Area Filtering**: We extract distances and densities only for pixels within urban areas:
 
 $$
 D_{urban} = \{D(x,y) \mid (x,y) \in U\}
@@ -174,19 +182,21 @@ $$
 \rho_{urban} = \{\rho(x,y) \mid (x,y) \in U\}
 $$
 
-   Where:
-   - $U$ is the set of all urban pixels (as identified in our segmentation)
-   - This ensures our gradient analysis focuses only on built-up areas
+Where:
 
-   **c. Distance Binning and Mean Density Calculation**: For each integer distance value, we calculate the mean density of urban pixels at that distance:
+- $U$ is the set of all urban pixels (as identified in our segmentation)
+- This ensures our gradient analysis focuses only on built-up areas
+
+**c. Distance Binning and Mean Density Calculation**: For each integer distance value, we calculate the mean density of urban pixels at that distance:
 
 $$
 \rho(d) = \frac{1}{|P_d|} \sum_{p \in P_d} \rho(p)
 $$
 
-   Where:
-   - $P_d = \{p \in U \mid d \leq D(p) < d+1\}$ is the set of urban pixels with distance in bin $d$
-   - Each bin has a width of 1 pixel, which corresponds to the satellite resolution (typically 20m)
+Where:
+
+- $P_d = \{p \in U \mid d \leq D(p) < d+1\}$ is the set of urban pixels with distance in bin $d$
+- Each bin has a width of 1 pixel, which corresponds to the satellite resolution (typically 20m)
 
 The result is a series of points $(d, \rho(d))$ that represent how urban density changes with distance from urban centers. This density-distance profile forms the foundation for our gradient analysis and urban morphology classification.
 
@@ -204,12 +214,13 @@ $$
 \alpha = \frac{n\sum_{i=1}^{n}(d_i \cdot \rho_i) - \sum_{i=1}^{n}d_i \sum_{i=1}^{n}\rho_i}{n\sum_{i=1}^{n}d_i^2 - (\sum_{i=1}^{n}d_i)^2}
 $$
 
-   Where:
-   - $d_i$ is the distance from urban center (in km) at point $i$
-   - $\rho_i$ is the urban density value at point $i$
-   - $n$ is the number of local minima points identified in the density gradient
+Where:
 
-   The α coefficient provides a quantitative measure of urban compactness, analogous to the exponential decay parameter in Clark's urban density model [17], but adapted for multi-modal satellite data. Steeper gradients (more negative α values) typically indicate more compact urban forms with rapid density decreases moving away from centers.
+- $d_i$ is the distance from urban center (in km) at point $i$
+- $\rho_i$ is the urban density value at point $i$
+- $n$ is the number of local minima points identified in the density gradient
+
+The α coefficient provides a quantitative measure of urban compactness, analogous to the exponential decay parameter in Clark's urban density model [17], but adapted for multi-modal satellite data. Steeper gradients (more negative α values) typically indicate more compact urban forms with rapid density decreases moving away from centers.
 
 2. **Minimum Effective Distance (LD)**: The distance at which urban density reaches a target threshold value considered minimal for efficient public transport service. This is calculated as the x-intercept of the regression line at the target density.
 
@@ -219,12 +230,13 @@ $$
 LD = \frac{\rho_{target} - \beta}{\alpha}
 $$
 
-   Where:
-   - $\rho_{target}$ is the target density threshold (typically set to the minimum density found in urban areas)
-   - $\beta$ is the y-intercept of the regression line
-   - $\alpha$ is the density gradient coefficient calculated above
+Where:
 
-   This metric directly relates to Newman and Kenworthy's [28] and Cervero and Guerra's [29] findings on minimum density thresholds for viable public transport. It represents the effective radius within which public transport service is likely to be efficient based on density patterns.
+- $\rho_{target}$ is the target density threshold (typically set to the minimum density found in urban areas)
+- $\beta$ is the y-intercept of the regression line
+- $\alpha$ is the density gradient coefficient calculated above
+
+This metric directly relates to Newman and Kenworthy's [28] and Cervero and Guerra's [29] findings on minimum density thresholds for viable public transport. It represents the effective radius within which public transport service is likely to be efficient based on density patterns.
 
 ### 3.4 Urban Morphology Classification
 
@@ -239,6 +251,7 @@ The peak detection algorithm identifies local maxima in the density gradient plo
 $$\rho_i > \rho_{i-1} \text{ and } \rho_i > \rho_{i+1} \text{ and } \rho_i - \min(\rho_L, \rho_R) > p \cdot (\rho_{max} - \rho_{min})$$
 
 Where:
+
 - $\rho_i$ is the density at point $i$
 - $\rho_L$ and $\rho_R$ are the lowest density values between point $i$ and the nearest higher peaks to the left and right
 - $p$ is the prominence factor (typically 0.02)
@@ -255,6 +268,7 @@ To validate our gradient analysis, we calculate the Mean Squared Error (MSE) bet
 $$MSE = \frac{1}{n}\sum_{i=1}^{n}(\rho_i - (\alpha \cdot d_i + \beta))^2$$
 
 Where:
+
 - $\rho_i$ is the actual density at distance $d_i$
 - $\alpha$ is the density gradient coefficient
 - $\beta$ is the y-intercept of the regression line
@@ -292,7 +306,7 @@ The SAR backscatter intensity images (Figure 2c-d, bottom row) highlight vertica
 
 ![Original Satellite Imagery](figure_2.jpg)
 
-*Figure 2: Input satellite data: (a) Malbork optical RGB image (left) and (b) Klodzko optical RGB image (right) in the top row; (c) Malbork SAR backscatter intensity image (left) and (d) Klodzko SAR backscatter intensity image (right) in the bottom row.*
+_Figure 2: Input satellite data: (a) Malbork optical RGB image (left) and (b) Klodzko optical RGB image (right) in the top row; (c) Malbork SAR backscatter intensity image (left) and (d) Klodzko SAR backscatter intensity image (right) in the bottom row._
 
 ### 4.2 Edge Detection and Fusion Results
 
@@ -306,7 +320,7 @@ In contrast, Klodzko's combined image shows a more uniform color distribution ac
 
 ![Edge Detection and Combined Images](figure_3.jpg)
 
-*Figure 3: Edge detection and fusion results: (a) Malbork edge detection result (left) and (b) Klodzko edge detection result (right) in the top row; (c) Malbork combined optical-SAR urban density map (left) and (d) Klodzko combined optical-SAR urban density map (right) in the bottom row.*
+_Figure 3: Edge detection and fusion results: (a) Malbork edge detection result (left) and (b) Klodzko edge detection result (right) in the top row; (c) Malbork combined optical-SAR urban density map (left) and (d) Klodzko combined optical-SAR urban density map (right) in the bottom row._
 
 ### 4.3 Histogram Decomposition and Urban Centers
 
@@ -320,7 +334,7 @@ The bottom row of Figure 4 presents the segmented urban areas with identified ce
 
 ![Histogram and Urban Centers](figure_4.jpg)
 
-*Figure 4: Histogram analysis and segmentation: (a) Malbork histogram decomposition (left) and (b) Klodzko histogram decomposition (right) in the top row; (c) Malbork segmented urban area with identified urban centers (left) and (d) Klodzko segmented urban area with identified urban centers (right) in the bottom row.*
+_Figure 4: Histogram analysis and segmentation: (a) Malbork histogram decomposition (left) and (b) Klodzko histogram decomposition (right) in the top row; (c) Malbork segmented urban area with identified urban centers (left) and (d) Klodzko segmented urban area with identified urban centers (right) in the bottom row._
 
 ### 4.4 Urban Density Gradient Results
 
@@ -328,7 +342,7 @@ Figure 5 presents the urban density gradient plots for both study areas, quantif
 
 ![Density Gradient Plots](figure_5.jpg)
 
-*Figure 5: Urban density gradient analysis: (a) Malbork density gradient plot (left) and (b) Klodzko density gradient plot (right). Each figure consists of two connected plots: the upper portion shows gradient density and fitting (yielding α values), while the lower portion shows deviations from the fitted line, highlighting areas of varying uniformity.*
+_Figure 5: Urban density gradient analysis: (a) Malbork density gradient plot (left) and (b) Klodzko density gradient plot (right). Each figure consists of two connected plots: the upper portion shows gradient density and fitting (yielding α values), while the lower portion shows deviations from the fitted line, highlighting areas of varying uniformity._
 
 Figure 5a (left) depicts Malbork's density gradient, characterized by a relatively uniform density decrease with distance from the center. The linear regression analysis yields a gradient coefficient α = -0.018/km, while the minimum effective distance (LD) is calculated at 21.8 km. Conversely, Figure 5b (right) illustrates Klodzko's density gradient, with a linear regression yielding α = -0.013/km and LD = 23.4 km. The visualization incorporates additional statistical parameters through color-coding, including the variation of gradient values with respect to all identified centers and the interquartile ranges (IQR, 25-75%) of all center-to-urban gradient distributions, providing comprehensive quantitative metrics for structural comparison.
 
@@ -350,7 +364,7 @@ The density gradient difference plots (Figure 5) reveal distinctive patterns tha
 
 ![Regional analysis of density gradient differences](figure_6.jpg)
 
-*Figure 6: Regional analysis of urban density gradient differences: (a) Malbork with three distinct regions (left) and (b) Klodzko with three regions (right). Green background indicates uniform regions, and red background highlights highly variable regions. For Malbork, Region 1 (0-1.4 km) shows remarkable uniformity, while Regions 2 (1.4-4.9 km) and 3 (4.9-8.1 km) display increasing variability. For Klodzko, all regions—Region 1 (0-4 km), Region 2 (4-6.2 km), and Region 3 (6.2-8.4 km)—display significant variability with no uniform central region.*
+_Figure 6: Regional analysis of urban density gradient differences: (a) Malbork with three distinct regions (left) and (b) Klodzko with three regions (right). Green background indicates uniform regions, and red background highlights highly variable regions. For Malbork, Region 1 (0-1.4 km) shows remarkable uniformity, while Regions 2 (1.4-4.9 km) and 3 (4.9-8.1 km) display increasing variability. For Klodzko, all regions—Region 1 (0-4 km), Region 2 (4-6.2 km), and Region 3 (6.2-8.4 km)—display significant variability with no uniform central region._
 
 Malbork's difference plot exhibits a remarkably uniform pattern extending approximately 1.4 km from the center (Region 1 in Figure 6a, highlighted in green), with minimal deviation from the regression model. This uniformity indicates a well-defined, coherent urban core with consistent density—a characteristic ideal for hub-based public transport systems. Beyond this 1.4 km radius, the plot begins to show a variable region (Region 2, 1.4-4.9 km) of multiple medium-height peaks, representing secondary density nodes at intermediate distances. At farther distances (Region 3, 4.9-8.1 km), the peaks demonstrate higher amplitude but wider spacing, indicating sparse but concentrated satellite developments. The entire variable region spans from 1.4 to 8.1 km, as clearly visualized in Figure 6a. This pattern aligns with Malbork's visual appearance in both optical and SAR imagery (Figures 2a, 2c), which shows a compact central area surrounded by distinct, separated development clusters.
 
@@ -370,7 +384,7 @@ Even with the current data, our urban morphology classification provides clear g
 
 ## 6. Conclusions and Future Work
 
-Our research demonstrates that multi-modal satellite imagery analysis can effectively inform public transport planning through the quantification of urban density gradients. By combining optical and SAR data, we have developed a methodology that efficiently segments urban areas, identifies urban centers, and calculates key metrics characterizing urban morphology. The density gradient coefficient (α) and minimum effective distance (LD) metrics offer planners an effective screening tool to understand urban structure and its implications for transport efficiency.
+Our research demonstrates that multi-modal satellite imagery analysis can effectively inform public transport planning through the quantification of urban density gradients. By combining optical and SAR data, we have developed a methodology that efficiently segments urban areas, identifies urban centers and subcenters, and calculates key metrics characterizing urban morphology. The density gradient coefficient (α) and minimum effective distance (LD) metrics offer planners an effective screening tool to understand urban structure and its implications for transport efficiency.
 
 The comparative analysis of Malbork and Klodzko illustrates how different urban morphologies require distinct public transport strategies. Malbork's monocentric structure with a well-defined uniform central region (α = -0.018/km) suggests an ideal environment for a hub-based transit system, while Klodzko's polycentric pattern with no uniform center (α = -0.013/km) indicates the need for a distributed network with multiple interconnected routes. These findings align with established urban planning principles while providing quantitative metrics to guide specific interventions.
 
@@ -382,7 +396,7 @@ The methodology presented in this paper offers urban planners a cost-effective, 
 
 ## Acknowledgments
 
-*[Standard acknowledgments section]*
+The authors acknowledge the use of 2024/2025 data from the Sentinel-1/Sentinel-2 missions, made available through the European Union's and the European Space Agency's (ESA) Copernicus Programme. The data were accessed via the Copernicus Browser and processed by the authors.
 
 ## References
 
@@ -470,8 +484,8 @@ The methodology presented in this paper offers urban planners a cost-effective, 
 
 42. Kenworthy, J.R., & Laube, F.B. (1999). Patterns of automobile dependence in cities: an international overview of key physical and economic dimensions with some implications for urban policy. Transportation Research Part A: Policy and Practice, 33(7-8), 691-723.
 
-*[Additional references to be added as needed]*
+_[Additional references to be added as needed]_
 
 ## Appendix: Implementation Details
 
-*[Description of the code implementation, parameter settings, and visualization techniques]*
+_[Description of the code implementation, parameter settings, and visualization techniques]_
