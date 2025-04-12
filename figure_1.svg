@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="930" viewBox="0 0 800 820">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+    <!-- Gradient for input data -->
+    <linearGradient id="inputGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e9f5ff"/>
+      <stop offset="100%" stop-color="#c0e0ff"/>
+    </linearGradient>
+    <!-- Gradient for processing steps -->
+    <linearGradient id="processGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f0f8f0"/>
+      <stop offset="100%" stop-color="#d0e8d0"/>
+    </linearGradient>
+    <!-- Gradient for analysis steps -->
+    <linearGradient id="analysisGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fff6e9"/>
+      <stop offset="100%" stop-color="#ffe0c0"/>
+    </linearGradient>
+    <!-- Gradient for output metrics -->
+    <linearGradient id="outputGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f9f0f8"/>
+      <stop offset="100%" stop-color="#e8d0e8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="35" font-family="Arial, sans-serif" font-size="22" font-weight="bold" text-anchor="middle" fill="#333">Urban Density Gradient Analysis Methodology Pipeline</text>
+
+  <!-- Input Data Box -->
+  <g transform="translate(400, 70)">
+    <rect x="-150" y="0" width="300" height="80" rx="8" ry="8" fill="url(#inputGradient)" stroke="#4080c0" stroke-width="2" filter="url(#shadow)"/>
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Input Data</text>
+    <text x="0" y="55" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">Optical Imagery + SAR Data</text>
+  </g>
+  
+  <!-- Arrow 1 -->
+  <g>
+    <path d="M400,150 L400,170" stroke="#666" stroke-width="2" />
+    <path d="M396,166 L400,170 L404,166" stroke="#666" stroke-width="2" fill="none" />
+  </g>
+
+  <!-- Preprocessing Box -->
+  <g transform="translate(400, 190)">
+    <rect x="-200" y="0" width="400" height="100" rx="8" ry="8" fill="url(#processGradient)" stroke="#388e3c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="0" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Preprocessing</text>
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Edge Detection (Sobel) on Optical Image</text>
+    <text x="0" y="70" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Edge Density Map Generation</text>
+    <text x="0" y="90" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">3. SAR Image Normalization</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <g>
+    <path d="M400,290 L400,310" stroke="#666" stroke-width="2" />
+    <path d="M396,306 L400,310 L404,306" stroke="#666" stroke-width="2" fill="none" />
+  </g>
+
+  <!-- Data Fusion Box -->
+  <g transform="translate(400, 330)">
+    <rect x="-200" y="0" width="400" height="80" rx="8" ry="8" fill="url(#processGradient)" stroke="#388e3c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="0" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Multi-modal Data Fusion</text>
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Combine Optical Edge Density + SAR Data</text>
+    <text x="0" y="70" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Non-Local Means Denoising</text>
+  </g>
+
+  <!-- Arrow 3 -->
+  <g>
+    <path d="M400,410 L400,430" stroke="#666" stroke-width="2" />
+    <path d="M396,426 L400,430 L404,426" stroke="#666" stroke-width="2" fill="none" />
+  </g>
+
+  <!-- Segmentation Box -->
+  <g transform="translate(400, 450)">
+    <rect x="-200" y="0" width="400" height="100" rx="8" ry="8" fill="url(#processGradient)" stroke="#388e3c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="0" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Urban Area Segmentation</text>
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Threshold-Based Classification</text>
+    <text x="0" y="70" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Morphological Operations</text>
+    <text x="0" y="90" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">3. Urban Center Identification</text>
+  </g>
+
+  <!-- Arrow 4 -->
+  <g>
+    <path d="M400,550 L400,570" stroke="#666" stroke-width="2" />
+    <path d="M396,566 L400,570 L404,566" stroke="#666" stroke-width="2" fill="none" />
+  </g>
+
+  <!-- Analysis Box -->
+  <g transform="translate(400, 590)">
+    <rect x="-200" y="0" width="400" height="80" rx="8" ry="8" fill="url(#analysisGradient)" stroke="#f57c00" stroke-width="2" filter="url(#shadow)"/>
+    <text x="0" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Density Gradient Analysis</text>
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Distance Transform from Urban Centers</text>
+    <text x="0" y="70" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Distance-Based Density Binning</text>
+  </g>
+
+  <!-- Arrow 5 -->
+  <g>
+    <path d="M400,670 L400,690" stroke="#666" stroke-width="2" />
+    <path d="M396,686 L400,690 L404,686" stroke="#666" stroke-width="2" fill="none" />
+  </g>
+
+  <!-- Output Metrics Box - Made taller and moved down -->
+  <g transform="translate(400, 730)">
+    <rect x="-200" y="0" width="400" height="110" rx="8" ry="8" fill="url(#outputGradient)" stroke="#9c27b0" stroke-width="2" filter="url(#shadow)"/>
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Output Metrics</text>
+    <text x="0" y="55" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Density Gradient Coefficient (α)</text>
+    <text x="0" y="75" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Minimum Effective Distance (LD)</text>
+    <text x="0" y="95" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">3. Urban Morphology Classification (Mono/Polycentric)</text>
+  </g>
+</svg>

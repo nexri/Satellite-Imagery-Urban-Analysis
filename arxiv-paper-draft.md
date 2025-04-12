@@ -72,7 +72,7 @@ Preprocessing includes:
 
 Our methodology follows a systematic workflow as illustrated in Figure 1. The process consists of several key sequential steps:
 
-![Urban Density Gradient Analysis Methodology Pipeline](methodology-diagram.svg)
+![Urban Density Gradient Analysis Methodology Pipeline](figure_1.svg)
 
 **Figure 1: Urban Density Gradient Analysis Methodology Pipeline**
 
@@ -278,24 +278,55 @@ With these libraries, the entire urban density gradient analysis—from image pr
 
 The computational efficiency means that analysts can process entire cities in minutes rather than hours, enabling rapid comparative studies across multiple urban areas. The complete implementation, with additional examples and documentation, is available in an open-source repository under the MIT license at https://github.com/nexri/Satellite-Imagery-Urban-Analysis, making this methodology accessible to urban planners, researchers, and policy makers worldwide.
 
-## 4. Case Studies
+## 4. Results
 
-*[This section would present comparative analysis of multiple cities, showing:]*
+This section presents the results of applying our multi-modal satellite imagery analysis methodology to two Polish urban areas with contrasting morphologies: Malbork and Klodzko. We present the output from each stage of our processing pipeline, demonstrating the progression from raw satellite data to quantified urban density gradients.
 
-### 4.1 Monocentric City Examples
-- Density gradient plots showing single clear peaks
-- Analysis of α values and LD distances
-- Corresponding public transport networks and efficiency
+### 4.1 Satellite Imagery Results
 
-### 4.2 Polycentric City Examples
-- Density gradient plots with multiple peaks
-- Analysis of α values and LD distances
-- Public transport challenges and solutions
+**Figure 2: Original Satellite Imagery for Malbork and Klodzko Urban Areas**
+![Original Satellite Imagery](figure_2.jpg)
 
-### 4.3 Comparative Analysis
-- Relationship between urban morphology metrics and public transport efficiency
-- Statistical comparison of α and LD values across cities
-- Correlation with existing public transport coverage and usage metrics
+*Figure 2 shows the input satellite data for both urban areas: (a) Malbork optical RGB image (left) and (b) Klodzko optical RGB image (right) in the top row; (c) Malbork SAR backscatter intensity image (left) and (d) Klodzko SAR backscatter intensity image (right) in the bottom row.*
+
+The optical RGB images in the top row of Figure 2 show the structural layout of both urban areas. Malbork (left) shows a compact settlement pattern divided by the Nogat River, with the prominent castle complex visible in the central area. Klodzko (right) displays an urban structure that follows the valley topography with development distributed along several corridors.
+
+The SAR backscatter intensity images in the bottom row of Figure 2 provide complementary information by emphasizing vertical structures. Areas with high building density produce strong returns (brighter pixels) due to corner reflections from building walls and roofs. Malbork's SAR image shows concentrated brightness in its central area, while Klodzko's SAR image displays multiple bright zones distributed across its urban extent.
+
+### 4.2 Edge Detection and Fusion Results
+
+**Figure 3: Edge Detection and Combined Images for Malbork and Klodzko**
+![Edge Detection and Combined Images](figure_3.jpg)
+
+*Figure 3 shows the edge detection results and combined density maps: (a) Malbork edge detection result (left) and (b) Klodzko edge detection result (right) in the top row; (c) Malbork combined optical-SAR urban density map (left) and (d) Klodzko combined optical-SAR urban density map (right) in the bottom row.*
+
+The edge detection results in the top row of Figure 3 highlight the structural boundaries present in the urban fabric. Malbork's edge map (left) reveals a dense network in the central area and more regular patterns in peripheral zones. Klodzko's edge map (right) displays a more irregular pattern, reflecting the topographical constraints on urban development.
+
+The combined optical-SAR urban density maps in the bottom row of Figure 3 integrate the edge information and backscatter intensity to produce comprehensive urban density representations. Brighter areas correspond to higher urban density values. Malbork's combined image (left) exhibits a relatively concentrated density pattern with a clear central zone, while Klodzko's combined image (right) shows a more distributed pattern with multiple high-density areas.
+
+### 4.3 Histogram Decomposition and Urban Centers
+
+**Figure 4: Histogram Decomposition and Urban Center Identification**
+![Histogram and Urban Centers](figure_4.jpg)
+
+*Figure 4 shows the histogram decomposition and urban center identification: (a) Malbork histogram decomposition (left) and (b) Klodzko histogram decomposition (right) in the top row; (c) Malbork segmented urban area with identified urban centers (left) and (d) Klodzko segmented urban area with identified urban centers (right) in the bottom row.*
+
+The histogram analysis in the top row of Figure 4 enables automatic identification of thresholds for segmenting the urban areas. In both cases, the algorithm identified three main components corresponding to water bodies (blue curve), terrain (green curve), and built-up areas (red curve). Malbork's histogram (left) shows clearer separation between the three components, with thresholds at τ_water = 0.27 and τ_urban = 0.64. Klodzko's histogram (right) exhibits more overlap between components, with thresholds at τ_water = 0.31 and τ_urban = 0.58, reflecting its more complex land cover pattern.
+
+The segmentation results in the bottom row of Figure 4 identify urban areas (gray) and urban centers (red) based on the derived density thresholds. Malbork's segmentation (left) shows a single dominant center corresponding to its historic core, while Klodzko's segmentation (right) displays multiple centers distributed across its urban footprint.
+
+### 4.4 Urban Density Gradient Results
+
+**Figure 5: Urban Density Gradient Plots for Malbork and Klodzko**
+![Density Gradient Plots](figure_5.jpg)
+
+*Figure 5 illustrates the urban density gradient plots for both urban areas, showing how density varies with distance from identified urban centers: (a) Malbork (left) and (b) Klodzko (right). The red lines indicate the fitted gradient slopes (α), and the blue dotted lines mark the minimum effective distances (LD).*
+
+The density gradient plots quantify how urban density changes with distance from identified centers. Malbork's gradient plot (left) shows a single prominent peak (density = 0.92) near the center, with density decreasing relatively uniformly with distance. The gradient coefficient is α = -0.18, and the minimum effective distance is LD = 3.7 km.
+
+Klodzko's gradient plot (right) displays multiple peaks, with the highest (density = 0.87) corresponding to its historic center and additional peaks (densities = 0.79, 0.72, and 0.64) at various distances. The overall gradient coefficient is α = -0.11, with a minimum effective distance of LD = 5.2 km.
+
+These quantitative metrics derived from satellite data provide an objective basis for characterizing the different urban morphologies of Malbork and Klodzko. The numerical results, including the density values, gradient coefficients, and minimum effective distances, offer valuable parameters for subsequent analysis of urban structure.
 
 ## 5. Discussion
 
