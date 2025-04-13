@@ -1,111 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="930" viewBox="0 0 800 820">
+<svg viewBox="0 0 800 670" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="670" fill="white" rx="10" ry="10"/>
+  
+  <!-- Boxes for each step with arrow connections -->
+  <!-- Step A -->
+  <rect x="100" y="80" width="200" height="80" rx="5" ry="5" fill="#e1f5fe" stroke="#0288d1" stroke-width="2"/>
+  <text x="200" y="105" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">A. Edge Detection &amp; Density</text>
+  <text x="200" y="125" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Optical Imagery Processing</text>
+  <text x="200" y="145" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Sobel + Gaussian Blurring</text>
+
+  <!-- Step B -->
+  <rect x="500" y="80" width="200" height="80" rx="5" ry="5" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+  <text x="600" y="105" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">B. Building Structure ID</text>
+  <text x="600" y="125" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">SAR Imagery Processing</text>
+  <text x="600" y="145" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Normalization</text>
+
+  <!-- Input Data Icons -->
+  <rect x="100" y="65" width="60" height="15" rx="3" ry="3" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+  <text x="130" y="77" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#333">Sentinel-2</text>
+  
+  <rect x="500" y="65" width="60" height="15" rx="3" ry="3" fill="#c8e6c9" stroke="#388e3c" stroke-width="1"/>
+  <text x="530" y="77" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#333">Sentinel-1</text>
+
+  <!-- Step C -->
+  <rect x="300" y="180" width="200" height="70" rx="5" ry="5" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2"/>
+  <text x="400" y="205" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">C. Multi-modal Data Fusion</text>
+  <text x="400" y="225" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Combine Optical + SAR</text>
+  <text x="400" y="240" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Non-Local Means Denoising</text>
+
+  <!-- Step D -->
+  <rect x="300" y="270" width="200" height="70" rx="5" ry="5" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+  <text x="400" y="295" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">D. Urban Area Segmentation</text>
+  <text x="400" y="315" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Gaussian Mixture Thresholding</text>
+  <text x="400" y="330" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Morphological Operations</text>
+
+  <!-- Step E -->
+  <rect x="50" y="360" width="300" height="70" rx="5" ry="5" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2"/>
+  <text x="200" y="385" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">E. Urban Center Identification</text>
+  <text x="200" y="405" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">High Density Regions</text>
+  <text x="200" y="420" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">τ_center = 1.4 Threshold</text>
+
+  <!-- Step F -->
+  <rect x="450" y="360" width="300" height="70" rx="5" ry="5" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+  <text x="600" y="385" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">F. Density Gradient Calculation</text>
+  <text x="600" y="405" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Distance Transform</text>
+  <text x="600" y="420" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Density-Distance Profiles</text>
+
+  <!-- Output Box -->
+  <rect x="250" y="500" width="300" height="80" rx="5" ry="5" fill="#fce4ec" stroke="#e91e63" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="400" y="520" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">Urban Morphology Classification</text>
+  <text x="400" y="540" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">Monocentric vs. Polycentric</text>
+  <text x="400" y="560" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">α: Density Gradient Coefficient</text>
+  <text x="400" y="575" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">LD: Minimum Effective Distance</text>
+
+  <!-- Arrows connecting the steps -->
+  <!-- A to C -->
+  <path d="M 200,160 L 200,215 L 300,215" fill="none" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- B to C -->
+  <path d="M 600,160 L 600,215 L 500,215" fill="none" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- C to D -->
+  <path d="M 400,250 L 400,270" fill="none" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- D to E -->
+  <path d="M 300,305 L 200,305 L 200,360" fill="none" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- D to F -->
+  <path d="M 500,305 L 600,305 L 600,360" fill="none" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- E to F -->
+  <path d="M 350,395 L 450,395" fill="none" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- E to Output -->
+  <path d="M 200,430 L 200,540 L 250,540" fill="none" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- F to Output -->
+  <path d="M 600,430 L 600,540 L 550,540" fill="none" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Arrowhead definition -->
   <defs>
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.3"/>
-    </filter>
-    <!-- Gradient for input data -->
-    <linearGradient id="inputGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#e9f5ff"/>
-      <stop offset="100%" stop-color="#c0e0ff"/>
-    </linearGradient>
-    <!-- Gradient for processing steps -->
-    <linearGradient id="processGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#f0f8f0"/>
-      <stop offset="100%" stop-color="#d0e8d0"/>
-    </linearGradient>
-    <!-- Gradient for analysis steps -->
-    <linearGradient id="analysisGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#fff6e9"/>
-      <stop offset="100%" stop-color="#ffe0c0"/>
-    </linearGradient>
-    <!-- Gradient for output metrics -->
-    <linearGradient id="outputGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#f9f0f8"/>
-      <stop offset="100%" stop-color="#e8d0e8"/>
-    </linearGradient>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
   </defs>
 
-  <!-- Title -->
-  <text x="400" y="35" font-family="Arial, sans-serif" font-size="22" font-weight="bold" text-anchor="middle" fill="#333">Urban Density Gradient Analysis Methodology Pipeline</text>
-
-  <!-- Input Data Box -->
-  <g transform="translate(400, 70)">
-    <rect x="-150" y="0" width="300" height="80" rx="8" ry="8" fill="url(#inputGradient)" stroke="#4080c0" stroke-width="2" filter="url(#shadow)"/>
-    <text x="0" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Input Data</text>
-    <text x="0" y="55" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">Optical Imagery + SAR Data</text>
-  </g>
+  <!-- Legend -->
+  <!-- Row 1 -->
+  <rect x="100" y="600" width="18" height="18" fill="#e1f5fe" stroke="#0288d1" stroke-width="1.5"/>
+  <text x="130" y="615" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Optical Processing</text>
   
-  <!-- Arrow 1 -->
-  <g>
-    <path d="M400,150 L400,170" stroke="#666" stroke-width="2" />
-    <path d="M396,166 L400,170 L404,166" stroke="#666" stroke-width="2" fill="none" />
-  </g>
-
-  <!-- Preprocessing Box -->
-  <g transform="translate(400, 190)">
-    <rect x="-200" y="0" width="400" height="100" rx="8" ry="8" fill="url(#processGradient)" stroke="#388e3c" stroke-width="2" filter="url(#shadow)"/>
-    <text x="0" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Preprocessing</text>
-    <text x="0" y="50" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Edge Detection (Sobel) on Optical Image</text>
-    <text x="0" y="70" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Edge Density Map Generation</text>
-    <text x="0" y="90" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">3. SAR Image Normalization</text>
-  </g>
-
-  <!-- Arrow 2 -->
-  <g>
-    <path d="M400,290 L400,310" stroke="#666" stroke-width="2" />
-    <path d="M396,306 L400,310 L404,306" stroke="#666" stroke-width="2" fill="none" />
-  </g>
-
-  <!-- Data Fusion Box -->
-  <g transform="translate(400, 330)">
-    <rect x="-200" y="0" width="400" height="80" rx="8" ry="8" fill="url(#processGradient)" stroke="#388e3c" stroke-width="2" filter="url(#shadow)"/>
-    <text x="0" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Multi-modal Data Fusion</text>
-    <text x="0" y="50" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Combine Optical Edge Density + SAR Data</text>
-    <text x="0" y="70" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Non-Local Means Denoising</text>
-  </g>
-
-  <!-- Arrow 3 -->
-  <g>
-    <path d="M400,410 L400,430" stroke="#666" stroke-width="2" />
-    <path d="M396,426 L400,430 L404,426" stroke="#666" stroke-width="2" fill="none" />
-  </g>
-
-  <!-- Segmentation Box -->
-  <g transform="translate(400, 450)">
-    <rect x="-200" y="0" width="400" height="100" rx="8" ry="8" fill="url(#processGradient)" stroke="#388e3c" stroke-width="2" filter="url(#shadow)"/>
-    <text x="0" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Urban Area Segmentation</text>
-    <text x="0" y="50" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Threshold-Based Classification</text>
-    <text x="0" y="70" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Morphological Operations</text>
-    <text x="0" y="90" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">3. Urban Center Identification</text>
-  </g>
-
-  <!-- Arrow 4 -->
-  <g>
-    <path d="M400,550 L400,570" stroke="#666" stroke-width="2" />
-    <path d="M396,566 L400,570 L404,566" stroke="#666" stroke-width="2" fill="none" />
-  </g>
-
-  <!-- Analysis Box -->
-  <g transform="translate(400, 590)">
-    <rect x="-200" y="0" width="400" height="80" rx="8" ry="8" fill="url(#analysisGradient)" stroke="#f57c00" stroke-width="2" filter="url(#shadow)"/>
-    <text x="0" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Density Gradient Analysis</text>
-    <text x="0" y="50" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Distance Transform from Urban Centers</text>
-    <text x="0" y="70" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Distance-Based Density Binning</text>
-  </g>
-
-  <!-- Arrow 5 -->
-  <g>
-    <path d="M400,670 L400,690" stroke="#666" stroke-width="2" />
-    <path d="M396,686 L400,690 L404,686" stroke="#666" stroke-width="2" fill="none" />
-  </g>
-
-  <!-- Output Metrics Box - Made taller and moved down -->
-  <g transform="translate(400, 730)">
-    <rect x="-200" y="0" width="400" height="110" rx="8" ry="8" fill="url(#outputGradient)" stroke="#9c27b0" stroke-width="2" filter="url(#shadow)"/>
-    <text x="0" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Output Metrics</text>
-    <text x="0" y="55" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">1. Density Gradient Coefficient (α)</text>
-    <text x="0" y="75" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">2. Minimum Effective Distance (LD)</text>
-    <text x="0" y="95" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">3. Urban Morphology Classification (Mono/Polycentric)</text>
-  </g>
+  <rect x="350" y="600" width="18" height="18" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="380" y="615" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">SAR Processing</text>
+  
+  <rect x="600" y="600" width="18" height="18" fill="#e8eaf6" stroke="#3f51b5" stroke-width="1.5"/>
+  <text x="630" y="615" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Data Fusion</text>
+  
+  <!-- Row 2 -->
+  <rect x="100" y="630" width="18" height="18" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5"/>
+  <text x="130" y="645" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Segmentation</text>
+  
+  <rect x="350" y="630" width="18" height="18" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+  <text x="380" y="645" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Center Detection</text>
+  
+  <rect x="600" y="630" width="18" height="18" fill="#ffebee" stroke="#f44336" stroke-width="1.5"/>
+  <text x="630" y="645" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Gradient Analysis</text>
 </svg>
