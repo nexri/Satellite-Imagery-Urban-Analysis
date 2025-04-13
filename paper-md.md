@@ -2,8 +2,10 @@
 
 ## Authors
 Paweł Tomkiewicz $^{1,2}$, Jacek Jaworski $^{2}$, Paweł Zielonka $^{2}$
-$^{1}$ WSB Merito Gdańsk, Polska
-$^{2}$ nexRI Gdańsk, Polska
+
+$^{1}$ WSB Merito University in Gdańsk, Poland
+
+$^{2}$ NexRI Laboratory for Artificial Intelligence, Gdańsk
 
 ## Abstract
 
