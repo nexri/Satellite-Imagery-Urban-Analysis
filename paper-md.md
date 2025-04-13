@@ -1,8 +1,7 @@
 # Evaluating Metrics Dedicated to Public Transport Through Urban Density Gradient Analysis of Multi-Modal Satellite Imagery
 
 ## Authors
-Paweł Tomkiewicz$^{1,2}$, Jacek Jaworski$^{2}$, Paweł Zielonka$^{2}$
-
+Paweł Tomkiewicz $^{1,2}$, Jacek Jaworski $^{2}$, Paweł Zielonka $^{2}$
 $^{1}$ WSB Merito Gdańsk, Polska
 $^{2}$ nexRI Gdańsk, Polska
 
