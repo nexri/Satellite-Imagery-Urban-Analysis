@@ -4,9 +4,7 @@
 Paweł Tomkiewicz $^{1,2}$, Jacek Jaworski $^{2}$, Paweł Zielonka $^{2}$
 
 $^{1}$ WSB Merito University in Gdańsk, Poland  
-$^{2}$ NexRI Laboratory for Artificial Intelligence, Gdańsk
-
-## Abstract
+$^{2}$ NexRI Laboratory for Artificial Intelligence, Gdańsk, Poland
 
 ## Abstract
 This paper presents a novel computational approach for evaluating urban metrics through density gradient analysis using multi-modal satellite imagery, with applications including public transport and other urban systems. By combining optical and Synthetic Aperture Radar (SAR) data, we develop a method to segment urban areas, identify urban centers, and quantify density gradients. Our approach calculates two key metrics: the density gradient coefficient (α) and the minimum effective distance (LD) at which density reaches a target threshold. We demonstrate that these metrics provide an effective screening tool for public transport analyses by revealing the underlying urban structure. Through comparative analysis of two representative cities with contrasting urban morphologies (monocentric vs polycentric), we establish relationships between density gradient characteristics and public transport network topologies. Cities with clear density peaks in their gradient plots indicate distinct urban centers requiring different transport strategies than those with more uniform density distributions. This methodology offers urban planners a cost-effective, globally applicable approach to preliminary public transport assessment using freely available satellite data.
