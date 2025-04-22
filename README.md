@@ -2,6 +2,9 @@
 
 A Python toolkit for analyzing urban density patterns from satellite imagery using optical and SAR data. This tool segments land cover types, measures urban density gradients, and visualizes spatial patterns to quantify urban structure.
 
+For comprehensive details and methodology, please refer to our research paper:
+[Urban Density Analysis from Satellite Imagery: A Combined Optical-SAR Approach](https://arxiv.org/abs/2504.11128)
+
 ## Overview
 
 This project processes satellite imagery to:
